@@ -1,7 +1,6 @@
-package client
+package amqp_session
 
 import (
-	"amqp-session/types"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
 	"time"
@@ -14,7 +13,7 @@ type Session struct {
 	channel         map[string]*amqp.Channel
 	notifyConnClose chan *amqp.Error
 	notifyChanClose map[string]chan *amqp.Error
-	consumeOptions  map[string]*types.ConsumeOption
+	consumeOptions  map[string]*ConsumeOption
 }
 
 func NewSession(url string) (session *Session, err error) {
@@ -31,7 +30,7 @@ func NewSession(url string) (session *Session, err error) {
 	go session.listen()
 	session.channel = make(map[string]*amqp.Channel)
 	session.notifyChanClose = make(map[string]chan *amqp.Error)
-	session.consumeOptions = make(map[string]*types.ConsumeOption)
+	session.consumeOptions = make(map[string]*ConsumeOption)
 	return
 }
 
@@ -88,7 +87,7 @@ func (c *Session) NewChannel(ID string) (err error) {
 	return
 }
 
-func (c *Session) NewConsume(option types.ConsumeOption) (err error) {
+func (c *Session) NewConsume(option ConsumeOption) (err error) {
 	c.consumeOptions[option.Consumer] = &option
 	msgs, err := c.channel[option.ChannelID].Consume(
 		option.Queue,

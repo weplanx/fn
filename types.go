@@ -1,4 +1,4 @@
-package types
+package amqp_session
 
 import "github.com/streadway/amqp"
 

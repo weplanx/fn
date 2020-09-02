@@ -1,14 +1,13 @@
 package main
 
 import (
-	"amqp-session/client"
-	"amqp-session/types"
+	"amqp_session"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
 )
 
 func main() {
-	session, err := client.NewSession("amqp://guest:guest@dell")
+	session, err := amqp_session.NewSession("amqp://guest:guest@dell")
 	if err != nil {
 		logrus.Fatalln(err)
 	}
@@ -16,7 +15,7 @@ func main() {
 	if err != nil {
 		logrus.Fatalln(err)
 	}
-	err = session.NewConsume(types.ConsumeOption{
+	err = session.NewConsume(amqp_session.ConsumeOption{
 		ChannelID: "default",
 		Queue:     "test",
 		Consumer:  "consumer",

@@ -1,4 +1,4 @@
-module amqp-session
+module amqp_session
 
 go 1.15
 
