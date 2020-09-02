@@ -1,4 +1,4 @@
-package amqp_session
+package amqpext
 
 import (
 	"github.com/sirupsen/logrus"
