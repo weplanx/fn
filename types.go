@@ -3,7 +3,7 @@ package amqpext
 import "github.com/streadway/amqp"
 
 type ConsumeOption struct {
-	ChannelID string
+	ID        string
 	Queue     string
 	Consumer  string
 	AutoAck   bool

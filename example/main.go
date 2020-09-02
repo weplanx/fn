@@ -1,24 +1,25 @@
 package main
 
 import (
-	"amqp-session"
+	"amqp-ext"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
+	"time"
 )
 
 func main() {
-	client, err := amqpext.NewSession("amqp://guest:guest@dell")
+	session, err := amqpext.NewSession("amqp://guest:guest@dell")
 	if err != nil {
 		logrus.Fatalln(err)
 	}
-	err = client.NewChannel("default")
+	err = session.Channel("default")
 	if err != nil {
 		logrus.Fatalln(err)
 	}
-	err = client.NewConsume(amqpext.ConsumeOption{
-		ChannelID: "default",
+	err = session.Consume(amqpext.ConsumeOption{
+		ID:        "default",
 		Queue:     "test",
-		Consumer:  "consumer",
+		Consumer:  "consumer-1",
 		AutoAck:   false,
 		Exclusive: false,
 		NoLocal:   false,
@@ -30,5 +31,9 @@ func main() {
 	if err != nil {
 		logrus.Fatalln(err)
 	}
+	go func() {
+		time.Sleep(time.Second * 10)
+		session.CloseChannel("default")
+	}()
 	select {}
 }
