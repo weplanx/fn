@@ -1,7 +1,7 @@
 package main
 
 import (
-	"amqp-ext"
+	"github.com/goOnly/amqp-ext"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
 	"time"

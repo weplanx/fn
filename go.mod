@@ -1,4 +1,4 @@
-module amqp-ext
+module github.com/goOnly/amqp-ext
 go 1.15
 
 require (
