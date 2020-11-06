@@ -1,3 +1,3 @@
-# AMQP Ext
+# Func Ext
 
-AMQP extended function library for go
+功能扩展提取研究
