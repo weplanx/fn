@@ -2,9 +2,10 @@ package bootstrap
 
 import (
 	"errors"
-	"funcext/app/service/storage"
-	"funcext/app/service/storage/drive"
-	"funcext/app/types"
+	"funcext/application/service/excel"
+	"funcext/application/service/storage"
+	"funcext/application/service/storage/drive"
+	"funcext/config"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
@@ -18,13 +19,13 @@ var (
 
 // Load application configuration
 // reference config.example.yml
-func LoadConfiguration() (cfg *types.Config, err error) {
-	if _, err = os.Stat("./config/config.yml"); os.IsNotExist(err) {
+func LoadConfiguration() (cfg *config.Config, err error) {
+	if _, err = os.Stat("./config.yml"); os.IsNotExist(err) {
 		err = LoadConfigurationNotExists
 		return
 	}
 	var buf []byte
-	buf, err = ioutil.ReadFile("./config/config.yml")
+	buf, err = ioutil.ReadFile("./config.yml")
 	if err != nil {
 		return
 	}
@@ -35,9 +36,9 @@ func LoadConfiguration() (cfg *types.Config, err error) {
 	return
 }
 
-func LoadStorage(cfg *types.Config) (stg *storage.Storage, err error) {
+func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
 	option := cfg.Storage
-	if reflect.DeepEqual(option, types.StorageOption{}) {
+	if reflect.DeepEqual(option, storage.Option{}) {
 		err = LoadStorageNotExists
 		return
 	}
@@ -47,5 +48,10 @@ func LoadStorage(cfg *types.Config) (stg *storage.Storage, err error) {
 		stg.Drive = drive.InitializeLocal(option.Option["path"].(string))
 		break
 	}
+	return
+}
+
+func InitializeExcel() (ex *excel.Excel, err error) {
+	ex = new(excel.Excel)
 	return
 }

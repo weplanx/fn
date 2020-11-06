@@ -1,7 +1,7 @@
 package main
 
 import (
-	"funcext/app"
+	"funcext/application"
 	"funcext/bootstrap"
 	"go.uber.org/fx"
 )
@@ -10,10 +10,11 @@ func main() {
 	fx.New(
 		fx.Provide(
 			bootstrap.LoadConfiguration,
-			bootstrap.LoadStorage,
+			bootstrap.InitializeStorage,
+			bootstrap.InitializeExcel,
 		),
 		fx.Invoke(
-			app.Application,
+			application.Application,
 		),
 	).Run()
 }

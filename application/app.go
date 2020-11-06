@@ -1,8 +1,8 @@
-package app
+package application
 
 import (
-	"funcext/app/common"
-	"funcext/app/controller"
+	"funcext/application/common"
+	"funcext/application/controller"
 	pb "funcext/router"
 	"google.golang.org/grpc"
 	"net"

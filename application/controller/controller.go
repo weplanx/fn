@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"funcext/app/common"
+	"funcext/application/common"
 	pb "funcext/router"
 )
 
