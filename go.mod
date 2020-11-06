@@ -1,4 +1,4 @@
-module func-ext
+module funcext
 
 go 1.15
 
