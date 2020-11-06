@@ -22,6 +22,5 @@
 !.vscode/extensions.json
 
 /config/config.yml
-/config/autoload
-/config/debug
+/public
 /go.sum
