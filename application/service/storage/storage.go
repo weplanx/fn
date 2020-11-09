@@ -1,6 +1,8 @@
 package storage
 
-import "funcext/application/service/storage/drive"
+import (
+	"funcext/application/service/storage/drive"
+)
 
 type Storage struct {
 	Drive interface{}

@@ -46,6 +46,16 @@ func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
 	case "local":
 		stg.Drive = drive.InitializeLocal(option.Option["path"].(string))
 		break
+	case "oss":
+		if stg.Drive, err = drive.InitializeOss(drive.OssOption{
+			Endpoint:        option.Option["endpoint"].(string),
+			AccessKeyId:     option.Option["access_key_id"].(string),
+			AccessKeySecret: option.Option["access_key_secret"].(string),
+			BucketName:      option.Option["bucket_name"].(string),
+		}); err != nil {
+			return
+		}
+		break
 	}
 	return
 }

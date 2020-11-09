@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bytes"
 	"context"
 	pb "funcext/router"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
@@ -36,7 +37,11 @@ func (c *controller) ExportToExcel(_ context.Context, param *pb.ExportToExcelPar
 	}
 	wg.Wait()
 	filename := uuid.New().String() + ".xlsx"
-	if err = file.SaveAs("public/" + filename); err != nil {
+	var buf *bytes.Buffer
+	if buf, err = file.WriteToBuffer(); err != nil {
+		return
+	}
+	if err = c.dep.Storage.Put(filename, buf.Bytes()); err != nil {
 		return
 	}
 	response = &pb.ExportToExcelResponse{
