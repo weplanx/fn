@@ -21,6 +21,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/config.yml
+/config/config.yml
 /public
 /go.sum

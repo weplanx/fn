@@ -4,6 +4,8 @@ import (
 	"funcext/application/common"
 	"funcext/application/controller"
 	pb "funcext/router"
+	grpcZap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"net"
 	"net/http"
@@ -20,7 +22,16 @@ func Application(dep common.Dependency) (err error) {
 	if err != nil {
 		return
 	}
-	server := grpc.NewServer()
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+	server := grpc.NewServer(
+		grpc.StreamInterceptor(
+			grpcZap.StreamServerInterceptor(logger),
+		),
+		grpc.UnaryInterceptor(
+			grpcZap.UnaryServerInterceptor(logger),
+		),
+	)
 	pb.RegisterRouterServer(
 		server,
 		controller.New(&dep),

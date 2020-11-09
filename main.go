@@ -11,7 +11,6 @@ func main() {
 		fx.Provide(
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeStorage,
-			bootstrap.InitializeExcel,
 		),
 		fx.Invoke(
 			application.Application,

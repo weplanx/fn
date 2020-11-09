@@ -2,7 +2,6 @@ package bootstrap
 
 import (
 	"errors"
-	"funcext/application/service/excel"
 	"funcext/application/service/storage"
 	"funcext/application/service/storage/drive"
 	"funcext/config"
@@ -20,12 +19,12 @@ var (
 // Load application configuration
 // reference config.example.yml
 func LoadConfiguration() (cfg *config.Config, err error) {
-	if _, err = os.Stat("./config.yml"); os.IsNotExist(err) {
+	if _, err = os.Stat("./config/config.yml"); os.IsNotExist(err) {
 		err = LoadConfigurationNotExists
 		return
 	}
 	var buf []byte
-	buf, err = ioutil.ReadFile("./config.yml")
+	buf, err = ioutil.ReadFile("./config/config.yml")
 	if err != nil {
 		return
 	}
@@ -48,10 +47,5 @@ func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
 		stg.Drive = drive.InitializeLocal(option.Option["path"].(string))
 		break
 	}
-	return
-}
-
-func InitializeExcel() (ex *excel.Excel, err error) {
-	ex = new(excel.Excel)
 	return
 }

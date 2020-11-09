@@ -20,11 +20,7 @@ message Row {
 }
 
 message ExportToExcelResponse {
-  uint32 error = 1;
-  string msg = 2;
-  message data {
-    string url = 1;
-  }
+  string url = 1;
 }
 
 
