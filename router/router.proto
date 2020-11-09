@@ -2,7 +2,7 @@ syntax = "proto3";
 package funcext;
 
 service Router {
-  rpc ExportToExcel (ExportToExcelParameter) returns (ExportToExcelResponse) {}
+  rpc ExportToExcel (stream ExportToExcelParameter) returns (ExportToExcelResponse) {}
 }
 
 message ExportToExcelParameter {

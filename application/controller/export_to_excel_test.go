@@ -8,7 +8,25 @@ import (
 
 func TestController_ExportToExcel(t *testing.T) {
 	ctx := context.Background()
-	response, err := client.ExportToExcel(ctx, &pb.ExportToExcelParameter{
+	//response, err := client.ExportToExcel(ctx, &pb.ExportToExcelParameter{
+	//	Sheets: []*pb.Sheet{
+	//		{
+	//			Name: "Sheet1",
+	//			Rows: []*pb.Row{
+	//				{Axis: "A1", Value: "ID"},
+	//				{Axis: "B1", Value: "Staff"},
+	//				{Axis: "C1", Value: "Username"},
+	//				{Axis: "D1", Value: "CreateTime"},
+	//				{Axis: "E1", Value: "UpdateTime"},
+	//			},
+	//		},
+	//	},
+	//})
+	stream, err := client.ExportToExcel(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = stream.Send(&pb.ExportToExcelParameter{
 		Sheets: []*pb.Sheet{
 			{
 				Name: "Sheet1",
@@ -24,7 +42,9 @@ func TestController_ExportToExcel(t *testing.T) {
 	})
 	if err != nil {
 		t.Fatal(err)
-	} else {
-		t.Log(response)
+	}
+	_, err = stream.CloseAndRecv()
+	if err != nil {
+		t.Fatal(err)
 	}
 }
