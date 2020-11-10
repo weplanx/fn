@@ -1,12 +1,16 @@
 syntax = "proto3";
 package funcext;
+import "google/protobuf/empty.proto";
 
 service Router {
-  rpc ExportToExcel (stream ExportToExcelParameter) returns (ExportToExcelResponse) {}
+  rpc SimpleExcel(Excel) returns (ExportURL) {}
+  rpc NewTaskForExcel (NewExcel) returns (Task) {}
+  rpc AddRowToExcel (stream AddRow) returns (google.protobuf.Empty) {}
+  rpc CommitTaskForExcel (Task) returns (ExportURL) {}
 }
 
-message ExportToExcelParameter {
-  repeated Sheet sheets = 2;
+message Excel {
+  repeated Sheet sheets = 1;
 }
 
 message Sheet {
@@ -19,7 +23,22 @@ message Row {
   string value = 2;
 }
 
-message ExportToExcelResponse {
+message NewExcel{
+  repeated string sheets = 1;
+}
+
+message Task{
+  string taskId = 1;
+}
+
+message AddRow{
+  string taskId = 1;
+  string sheet = 2;
+  string axis = 3;
+  string value = 4;
+}
+
+message ExportURL {
   string url = 1;
 }
 

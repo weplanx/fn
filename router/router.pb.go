@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -24,39 +25,39 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type ExportToExcelParameter struct {
-	Sheets               []*Sheet `protobuf:"bytes,2,rep,name=sheets,proto3" json:"sheets,omitempty"`
+type Excel struct {
+	Sheets               []*Sheet `protobuf:"bytes,1,rep,name=sheets,proto3" json:"sheets,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ExportToExcelParameter) Reset()         { *m = ExportToExcelParameter{} }
-func (m *ExportToExcelParameter) String() string { return proto.CompactTextString(m) }
-func (*ExportToExcelParameter) ProtoMessage()    {}
-func (*ExportToExcelParameter) Descriptor() ([]byte, []int) {
+func (m *Excel) Reset()         { *m = Excel{} }
+func (m *Excel) String() string { return proto.CompactTextString(m) }
+func (*Excel) ProtoMessage()    {}
+func (*Excel) Descriptor() ([]byte, []int) {
 	return fileDescriptor_367072455c71aedc, []int{0}
 }
 
-func (m *ExportToExcelParameter) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ExportToExcelParameter.Unmarshal(m, b)
+func (m *Excel) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Excel.Unmarshal(m, b)
 }
-func (m *ExportToExcelParameter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ExportToExcelParameter.Marshal(b, m, deterministic)
+func (m *Excel) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Excel.Marshal(b, m, deterministic)
 }
-func (m *ExportToExcelParameter) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ExportToExcelParameter.Merge(m, src)
+func (m *Excel) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Excel.Merge(m, src)
 }
-func (m *ExportToExcelParameter) XXX_Size() int {
-	return xxx_messageInfo_ExportToExcelParameter.Size(m)
+func (m *Excel) XXX_Size() int {
+	return xxx_messageInfo_Excel.Size(m)
 }
-func (m *ExportToExcelParameter) XXX_DiscardUnknown() {
-	xxx_messageInfo_ExportToExcelParameter.DiscardUnknown(m)
+func (m *Excel) XXX_DiscardUnknown() {
+	xxx_messageInfo_Excel.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ExportToExcelParameter proto.InternalMessageInfo
+var xxx_messageInfo_Excel proto.InternalMessageInfo
 
-func (m *ExportToExcelParameter) GetSheets() []*Sheet {
+func (m *Excel) GetSheets() []*Sheet {
 	if m != nil {
 		return m.Sheets
 	}
@@ -157,39 +158,180 @@ func (m *Row) GetValue() string {
 	return ""
 }
 
-type ExportToExcelResponse struct {
+type NewExcel struct {
+	Sheets               []string `protobuf:"bytes,1,rep,name=sheets,proto3" json:"sheets,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NewExcel) Reset()         { *m = NewExcel{} }
+func (m *NewExcel) String() string { return proto.CompactTextString(m) }
+func (*NewExcel) ProtoMessage()    {}
+func (*NewExcel) Descriptor() ([]byte, []int) {
+	return fileDescriptor_367072455c71aedc, []int{3}
+}
+
+func (m *NewExcel) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NewExcel.Unmarshal(m, b)
+}
+func (m *NewExcel) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NewExcel.Marshal(b, m, deterministic)
+}
+func (m *NewExcel) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NewExcel.Merge(m, src)
+}
+func (m *NewExcel) XXX_Size() int {
+	return xxx_messageInfo_NewExcel.Size(m)
+}
+func (m *NewExcel) XXX_DiscardUnknown() {
+	xxx_messageInfo_NewExcel.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NewExcel proto.InternalMessageInfo
+
+func (m *NewExcel) GetSheets() []string {
+	if m != nil {
+		return m.Sheets
+	}
+	return nil
+}
+
+type Task struct {
+	TaskId               string   `protobuf:"bytes,1,opt,name=taskId,proto3" json:"taskId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Task) Reset()         { *m = Task{} }
+func (m *Task) String() string { return proto.CompactTextString(m) }
+func (*Task) ProtoMessage()    {}
+func (*Task) Descriptor() ([]byte, []int) {
+	return fileDescriptor_367072455c71aedc, []int{4}
+}
+
+func (m *Task) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Task.Unmarshal(m, b)
+}
+func (m *Task) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Task.Marshal(b, m, deterministic)
+}
+func (m *Task) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Task.Merge(m, src)
+}
+func (m *Task) XXX_Size() int {
+	return xxx_messageInfo_Task.Size(m)
+}
+func (m *Task) XXX_DiscardUnknown() {
+	xxx_messageInfo_Task.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Task proto.InternalMessageInfo
+
+func (m *Task) GetTaskId() string {
+	if m != nil {
+		return m.TaskId
+	}
+	return ""
+}
+
+type AddRow struct {
+	TaskId               string   `protobuf:"bytes,1,opt,name=taskId,proto3" json:"taskId,omitempty"`
+	Sheet                string   `protobuf:"bytes,2,opt,name=sheet,proto3" json:"sheet,omitempty"`
+	Axis                 string   `protobuf:"bytes,3,opt,name=axis,proto3" json:"axis,omitempty"`
+	Value                string   `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *AddRow) Reset()         { *m = AddRow{} }
+func (m *AddRow) String() string { return proto.CompactTextString(m) }
+func (*AddRow) ProtoMessage()    {}
+func (*AddRow) Descriptor() ([]byte, []int) {
+	return fileDescriptor_367072455c71aedc, []int{5}
+}
+
+func (m *AddRow) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AddRow.Unmarshal(m, b)
+}
+func (m *AddRow) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AddRow.Marshal(b, m, deterministic)
+}
+func (m *AddRow) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AddRow.Merge(m, src)
+}
+func (m *AddRow) XXX_Size() int {
+	return xxx_messageInfo_AddRow.Size(m)
+}
+func (m *AddRow) XXX_DiscardUnknown() {
+	xxx_messageInfo_AddRow.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AddRow proto.InternalMessageInfo
+
+func (m *AddRow) GetTaskId() string {
+	if m != nil {
+		return m.TaskId
+	}
+	return ""
+}
+
+func (m *AddRow) GetSheet() string {
+	if m != nil {
+		return m.Sheet
+	}
+	return ""
+}
+
+func (m *AddRow) GetAxis() string {
+	if m != nil {
+		return m.Axis
+	}
+	return ""
+}
+
+func (m *AddRow) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
+type ExportURL struct {
 	Url                  string   `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ExportToExcelResponse) Reset()         { *m = ExportToExcelResponse{} }
-func (m *ExportToExcelResponse) String() string { return proto.CompactTextString(m) }
-func (*ExportToExcelResponse) ProtoMessage()    {}
-func (*ExportToExcelResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_367072455c71aedc, []int{3}
+func (m *ExportURL) Reset()         { *m = ExportURL{} }
+func (m *ExportURL) String() string { return proto.CompactTextString(m) }
+func (*ExportURL) ProtoMessage()    {}
+func (*ExportURL) Descriptor() ([]byte, []int) {
+	return fileDescriptor_367072455c71aedc, []int{6}
 }
 
-func (m *ExportToExcelResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ExportToExcelResponse.Unmarshal(m, b)
+func (m *ExportURL) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ExportURL.Unmarshal(m, b)
 }
-func (m *ExportToExcelResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ExportToExcelResponse.Marshal(b, m, deterministic)
+func (m *ExportURL) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ExportURL.Marshal(b, m, deterministic)
 }
-func (m *ExportToExcelResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ExportToExcelResponse.Merge(m, src)
+func (m *ExportURL) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExportURL.Merge(m, src)
 }
-func (m *ExportToExcelResponse) XXX_Size() int {
-	return xxx_messageInfo_ExportToExcelResponse.Size(m)
+func (m *ExportURL) XXX_Size() int {
+	return xxx_messageInfo_ExportURL.Size(m)
 }
-func (m *ExportToExcelResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ExportToExcelResponse.DiscardUnknown(m)
+func (m *ExportURL) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExportURL.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ExportToExcelResponse proto.InternalMessageInfo
+var xxx_messageInfo_ExportURL proto.InternalMessageInfo
 
-func (m *ExportToExcelResponse) GetUrl() string {
+func (m *ExportURL) GetUrl() string {
 	if m != nil {
 		return m.Url
 	}
@@ -197,31 +339,42 @@ func (m *ExportToExcelResponse) GetUrl() string {
 }
 
 func init() {
-	proto.RegisterType((*ExportToExcelParameter)(nil), "funcext.ExportToExcelParameter")
+	proto.RegisterType((*Excel)(nil), "funcext.Excel")
 	proto.RegisterType((*Sheet)(nil), "funcext.Sheet")
 	proto.RegisterType((*Row)(nil), "funcext.Row")
-	proto.RegisterType((*ExportToExcelResponse)(nil), "funcext.ExportToExcelResponse")
+	proto.RegisterType((*NewExcel)(nil), "funcext.NewExcel")
+	proto.RegisterType((*Task)(nil), "funcext.Task")
+	proto.RegisterType((*AddRow)(nil), "funcext.AddRow")
+	proto.RegisterType((*ExportURL)(nil), "funcext.ExportURL")
 }
 
 func init() { proto.RegisterFile("router.proto", fileDescriptor_367072455c71aedc) }
 
 var fileDescriptor_367072455c71aedc = []byte{
-	// 230 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x41, 0x4b, 0xc3, 0x40,
-	0x10, 0x85, 0x4d, 0xd3, 0x46, 0x1c, 0xab, 0xc8, 0xa0, 0x12, 0x3c, 0x68, 0xd8, 0x83, 0xc4, 0x4b,
-	0x84, 0x7a, 0x16, 0xbc, 0xf4, 0x2e, 0x6b, 0xcf, 0xc2, 0x5a, 0x46, 0x14, 0xd2, 0x4c, 0x98, 0xdd,
-	0x98, 0xfd, 0xf9, 0xb2, 0xdb, 0xa4, 0x50, 0xc8, 0xed, 0xed, 0x9b, 0xfd, 0xde, 0xce, 0x5b, 0x58,
-	0x0a, 0x77, 0x8e, 0xa4, 0x6a, 0x85, 0x1d, 0xe3, 0xe9, 0x77, 0xd7, 0x6c, 0xc9, 0x3b, 0xf5, 0x06,
-	0xb7, 0x6b, 0xdf, 0xb2, 0xb8, 0x0d, 0xaf, 0xfd, 0x96, 0xea, 0x77, 0x23, 0x66, 0x47, 0x8e, 0x04,
-	0x1f, 0x21, 0xb3, 0x3f, 0x44, 0xce, 0xe6, 0xb3, 0x22, 0x2d, 0xcf, 0x57, 0x97, 0xd5, 0xc0, 0x54,
-	0x1f, 0xc1, 0xd6, 0xc3, 0x54, 0xbd, 0xc2, 0x22, 0x1a, 0x88, 0x30, 0x6f, 0xcc, 0x8e, 0xf2, 0xa4,
-	0x48, 0xca, 0x33, 0x1d, 0x35, 0x16, 0x30, 0x17, 0xee, 0xc7, 0x88, 0xe5, 0x21, 0x42, 0x73, 0xaf,
-	0xe3, 0x44, 0x3d, 0x43, 0xaa, 0xb9, 0x0f, 0xb0, 0xf1, 0xbf, 0x76, 0x84, 0x83, 0xc6, 0x6b, 0x58,
-	0xfc, 0x99, 0xba, 0xa3, 0x7c, 0x16, 0xcd, 0xfd, 0x41, 0x3d, 0xc1, 0xcd, 0xd1, 0xc6, 0x9a, 0x6c,
-	0xcb, 0x8d, 0x25, 0xbc, 0x82, 0xb4, 0x93, 0x7a, 0x48, 0x08, 0x72, 0xf5, 0x09, 0x99, 0x8e, 0xad,
-	0x71, 0x03, 0x17, 0x47, 0x10, 0x3e, 0x1c, 0x56, 0x99, 0xae, 0x7f, 0x77, 0x3f, 0x7d, 0x61, 0x7c,
-	0x4d, 0x9d, 0x94, 0xc9, 0x57, 0x16, 0x3f, 0xf3, 0xe5, 0x3f, 0x00, 0x00, 0xff, 0xff, 0xea, 0x03,
-	0xd9, 0x10, 0x5c, 0x01, 0x00, 0x00,
+	// 363 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x52, 0xc1, 0x4e, 0xc2, 0x40,
+	0x10, 0xa5, 0xb4, 0x54, 0x19, 0x40, 0x74, 0x63, 0x48, 0x53, 0xa3, 0x21, 0x7b, 0x30, 0x9c, 0xda,
+	0x04, 0xe2, 0xc1, 0x44, 0x0f, 0xc6, 0x60, 0x62, 0x62, 0x38, 0x14, 0xbc, 0x5b, 0x60, 0x41, 0x42,
+	0xcb, 0x36, 0xbb, 0x5b, 0x5b, 0x3f, 0xda, 0x7f, 0x30, 0xbb, 0xdb, 0x56, 0x48, 0xf0, 0x36, 0xf3,
+	0x66, 0xe6, 0xbd, 0x37, 0xbb, 0x03, 0x6d, 0x46, 0x53, 0x41, 0x98, 0x97, 0x30, 0x2a, 0x28, 0x3a,
+	0x59, 0xa5, 0xbb, 0x05, 0xc9, 0x85, 0x7b, 0xb5, 0xa6, 0x74, 0x1d, 0x11, 0x5f, 0xc1, 0xf3, 0x74,
+	0xe5, 0x93, 0x38, 0x11, 0xdf, 0xba, 0x0b, 0xfb, 0xd0, 0x18, 0xe7, 0x0b, 0x12, 0xa1, 0x5b, 0xb0,
+	0xf9, 0x27, 0x21, 0x82, 0x3b, 0x46, 0xdf, 0x1c, 0xb4, 0x86, 0x67, 0x5e, 0x31, 0xef, 0x4d, 0x25,
+	0x1c, 0x14, 0x55, 0xfc, 0x08, 0x0d, 0x05, 0x20, 0x04, 0xd6, 0x2e, 0x8c, 0x89, 0x63, 0xf4, 0x8d,
+	0x41, 0x33, 0x50, 0x31, 0xea, 0x83, 0xc5, 0x68, 0xc6, 0x9d, 0xba, 0xa2, 0x68, 0x57, 0x14, 0x01,
+	0xcd, 0x02, 0x55, 0xc1, 0x3e, 0x98, 0x01, 0xcd, 0xe4, 0x70, 0x98, 0x6f, 0x78, 0x39, 0x2c, 0x63,
+	0x74, 0x09, 0x8d, 0xaf, 0x30, 0x4a, 0x89, 0x53, 0x57, 0xa0, 0x4e, 0x30, 0x86, 0xd3, 0x09, 0xc9,
+	0xb4, 0xc7, 0xde, 0x81, 0xc7, 0x66, 0xe5, 0xe9, 0x06, 0xac, 0x59, 0xc8, 0xb7, 0xb2, 0x2e, 0x42,
+	0xbe, 0x7d, 0x5d, 0x16, 0xbc, 0x45, 0x86, 0x3f, 0xc0, 0x7e, 0x5a, 0x2e, 0xa5, 0xee, 0x3f, 0x1d,
+	0x52, 0x5b, 0x71, 0x95, 0xda, 0xbc, 0x5c, 0x51, 0xb9, 0x34, 0x8f, 0xb9, 0xb4, 0xf6, 0x5d, 0x5e,
+	0x43, 0x73, 0x9c, 0x27, 0x94, 0x89, 0xf7, 0xe0, 0x0d, 0x9d, 0x83, 0x99, 0xb2, 0xa8, 0x50, 0x90,
+	0xe1, 0xf0, 0xc7, 0x00, 0x3b, 0x50, 0x9f, 0x83, 0x46, 0xd0, 0x9a, 0x6e, 0xe2, 0x24, 0x22, 0x7a,
+	0xa5, 0xbf, 0x67, 0x56, 0xb9, 0x8b, 0xf6, 0xf2, 0x82, 0x0f, 0xd7, 0xd0, 0x1d, 0x74, 0x27, 0x24,
+	0x93, 0x3b, 0xbe, 0x50, 0xa6, 0x07, 0x2f, 0xaa, 0xc6, 0xf2, 0x79, 0xdc, 0x4e, 0x05, 0xc9, 0x4e,
+	0x5c, 0x43, 0x0f, 0xd0, 0xd1, 0x7b, 0xcf, 0xa8, 0x1e, 0xea, 0x56, 0x1d, 0x1a, 0x77, 0x7b, 0x9e,
+	0x3e, 0x0e, 0xaf, 0x3c, 0x0e, 0x6f, 0x2c, 0x8f, 0x03, 0xd7, 0x06, 0x06, 0xba, 0x07, 0xf4, 0x4c,
+	0xe3, 0x78, 0x23, 0x0e, 0x74, 0x0f, 0x45, 0x8e, 0xfb, 0x9d, 0xdb, 0x8a, 0x6e, 0xf4, 0x1b, 0x00,
+	0x00, 0xff, 0xff, 0x1c, 0xcf, 0x6a, 0xdd, 0x92, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -236,7 +389,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type RouterClient interface {
-	ExportToExcel(ctx context.Context, opts ...grpc.CallOption) (Router_ExportToExcelClient, error)
+	SimpleExcel(ctx context.Context, in *Excel, opts ...grpc.CallOption) (*ExportURL, error)
+	NewTaskForExcel(ctx context.Context, in *NewExcel, opts ...grpc.CallOption) (*Task, error)
+	AddRowToExcel(ctx context.Context, opts ...grpc.CallOption) (Router_AddRowToExcelClient, error)
+	CommitTaskForExcel(ctx context.Context, in *Task, opts ...grpc.CallOption) (*ExportURL, error)
 }
 
 type routerClient struct {
@@ -247,91 +403,197 @@ func NewRouterClient(cc *grpc.ClientConn) RouterClient {
 	return &routerClient{cc}
 }
 
-func (c *routerClient) ExportToExcel(ctx context.Context, opts ...grpc.CallOption) (Router_ExportToExcelClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Router_serviceDesc.Streams[0], "/funcext.Router/ExportToExcel", opts...)
+func (c *routerClient) SimpleExcel(ctx context.Context, in *Excel, opts ...grpc.CallOption) (*ExportURL, error) {
+	out := new(ExportURL)
+	err := c.cc.Invoke(ctx, "/funcext.Router/SimpleExcel", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &routerExportToExcelClient{stream}
+	return out, nil
+}
+
+func (c *routerClient) NewTaskForExcel(ctx context.Context, in *NewExcel, opts ...grpc.CallOption) (*Task, error) {
+	out := new(Task)
+	err := c.cc.Invoke(ctx, "/funcext.Router/NewTaskForExcel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *routerClient) AddRowToExcel(ctx context.Context, opts ...grpc.CallOption) (Router_AddRowToExcelClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Router_serviceDesc.Streams[0], "/funcext.Router/AddRowToExcel", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &routerAddRowToExcelClient{stream}
 	return x, nil
 }
 
-type Router_ExportToExcelClient interface {
-	Send(*ExportToExcelParameter) error
-	CloseAndRecv() (*ExportToExcelResponse, error)
+type Router_AddRowToExcelClient interface {
+	Send(*AddRow) error
+	CloseAndRecv() (*empty.Empty, error)
 	grpc.ClientStream
 }
 
-type routerExportToExcelClient struct {
+type routerAddRowToExcelClient struct {
 	grpc.ClientStream
 }
 
-func (x *routerExportToExcelClient) Send(m *ExportToExcelParameter) error {
+func (x *routerAddRowToExcelClient) Send(m *AddRow) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *routerExportToExcelClient) CloseAndRecv() (*ExportToExcelResponse, error) {
+func (x *routerAddRowToExcelClient) CloseAndRecv() (*empty.Empty, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(ExportToExcelResponse)
+	m := new(empty.Empty)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
+func (c *routerClient) CommitTaskForExcel(ctx context.Context, in *Task, opts ...grpc.CallOption) (*ExportURL, error) {
+	out := new(ExportURL)
+	err := c.cc.Invoke(ctx, "/funcext.Router/CommitTaskForExcel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RouterServer is the server API for Router service.
 type RouterServer interface {
-	ExportToExcel(Router_ExportToExcelServer) error
+	SimpleExcel(context.Context, *Excel) (*ExportURL, error)
+	NewTaskForExcel(context.Context, *NewExcel) (*Task, error)
+	AddRowToExcel(Router_AddRowToExcelServer) error
+	CommitTaskForExcel(context.Context, *Task) (*ExportURL, error)
 }
 
 // UnimplementedRouterServer can be embedded to have forward compatible implementations.
 type UnimplementedRouterServer struct {
 }
 
-func (*UnimplementedRouterServer) ExportToExcel(srv Router_ExportToExcelServer) error {
-	return status.Errorf(codes.Unimplemented, "method ExportToExcel not implemented")
+func (*UnimplementedRouterServer) SimpleExcel(ctx context.Context, req *Excel) (*ExportURL, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SimpleExcel not implemented")
+}
+func (*UnimplementedRouterServer) NewTaskForExcel(ctx context.Context, req *NewExcel) (*Task, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewTaskForExcel not implemented")
+}
+func (*UnimplementedRouterServer) AddRowToExcel(srv Router_AddRowToExcelServer) error {
+	return status.Errorf(codes.Unimplemented, "method AddRowToExcel not implemented")
+}
+func (*UnimplementedRouterServer) CommitTaskForExcel(ctx context.Context, req *Task) (*ExportURL, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommitTaskForExcel not implemented")
 }
 
 func RegisterRouterServer(s *grpc.Server, srv RouterServer) {
 	s.RegisterService(&_Router_serviceDesc, srv)
 }
 
-func _Router_ExportToExcel_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(RouterServer).ExportToExcel(&routerExportToExcelServer{stream})
+func _Router_SimpleExcel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Excel)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RouterServer).SimpleExcel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/funcext.Router/SimpleExcel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RouterServer).SimpleExcel(ctx, req.(*Excel))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type Router_ExportToExcelServer interface {
-	SendAndClose(*ExportToExcelResponse) error
-	Recv() (*ExportToExcelParameter, error)
+func _Router_NewTaskForExcel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewExcel)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RouterServer).NewTaskForExcel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/funcext.Router/NewTaskForExcel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RouterServer).NewTaskForExcel(ctx, req.(*NewExcel))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Router_AddRowToExcel_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(RouterServer).AddRowToExcel(&routerAddRowToExcelServer{stream})
+}
+
+type Router_AddRowToExcelServer interface {
+	SendAndClose(*empty.Empty) error
+	Recv() (*AddRow, error)
 	grpc.ServerStream
 }
 
-type routerExportToExcelServer struct {
+type routerAddRowToExcelServer struct {
 	grpc.ServerStream
 }
 
-func (x *routerExportToExcelServer) SendAndClose(m *ExportToExcelResponse) error {
+func (x *routerAddRowToExcelServer) SendAndClose(m *empty.Empty) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *routerExportToExcelServer) Recv() (*ExportToExcelParameter, error) {
-	m := new(ExportToExcelParameter)
+func (x *routerAddRowToExcelServer) Recv() (*AddRow, error) {
+	m := new(AddRow)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
+func _Router_CommitTaskForExcel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Task)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RouterServer).CommitTaskForExcel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/funcext.Router/CommitTaskForExcel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RouterServer).CommitTaskForExcel(ctx, req.(*Task))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Router_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "funcext.Router",
 	HandlerType: (*RouterServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "SimpleExcel",
+			Handler:    _Router_SimpleExcel_Handler,
+		},
+		{
+			MethodName: "NewTaskForExcel",
+			Handler:    _Router_NewTaskForExcel_Handler,
+		},
+		{
+			MethodName: "CommitTaskForExcel",
+			Handler:    _Router_CommitTaskForExcel_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "ExportToExcel",
-			Handler:       _Router_ExportToExcel_Handler,
+			StreamName:    "AddRowToExcel",
+			Handler:       _Router_AddRowToExcel_Handler,
 			ClientStreams: true,
 		},
 	},
