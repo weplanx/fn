@@ -4,3 +4,9 @@ storage:
   drive: local
   option:
     path: ./public
+#  drive: oss
+#  option:
+#    endpoint: http://oss-cn-shenzhen.aliyuncs.com
+#    access_key_id:
+#    access_key_secret:
+#    bucket_name:

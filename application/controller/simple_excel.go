@@ -9,12 +9,11 @@ import (
 	"sync"
 )
 
-func (c *controller) SimpleExcel(ctx context.Context, excel *pb.Excel) (result *pb.ExportURL, err error) {
+func (c *controller) SimpleExcel(ctx context.Context, param *pb.Excel) (result *pb.ExportURL, err error) {
 	file := excelize.NewFile()
-	filename := uuid.New().String() + ".xlsx"
 	var wg sync.WaitGroup
-	wg.Add(len(excel.Sheets))
-	for _, sheet := range excel.Sheets {
+	wg.Add(len(param.Sheets))
+	for _, sheet := range param.Sheets {
 		go func(sheet *pb.Sheet) {
 			defer wg.Done()
 			var streamWriter *excelize.StreamWriter
@@ -38,6 +37,7 @@ func (c *controller) SimpleExcel(ctx context.Context, excel *pb.Excel) (result *
 	if buf, err = file.WriteToBuffer(); err != nil {
 		return
 	}
+	filename := uuid.New().String() + ".xlsx"
 	if err = c.dep.Storage.Put(filename, buf.Bytes()); err != nil {
 		return
 	}

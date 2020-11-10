@@ -2,6 +2,8 @@ package bootstrap
 
 import (
 	"errors"
+	"funcext/application/service/excel"
+	"funcext/application/service/excel/utils"
 	"funcext/application/service/storage"
 	"funcext/application/service/storage/drive"
 	"funcext/config"
@@ -35,6 +37,8 @@ func LoadConfiguration() (cfg *config.Config, err error) {
 	return
 }
 
+// Initialize local storage or object storage
+// reference config.example.yml
 func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
 	option := cfg.Storage
 	if reflect.DeepEqual(option, storage.Option{}) {
@@ -58,4 +62,11 @@ func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
 		break
 	}
 	return
+}
+
+// Initialize Excel function logic
+func InitializeExcel() *excel.Excel {
+	ex := new(excel.Excel)
+	ex.Task = utils.NewTaskMap()
+	return ex
 }

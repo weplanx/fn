@@ -5,7 +5,7 @@ import "google/protobuf/empty.proto";
 service Router {
   rpc SimpleExcel(Excel) returns (ExportURL) {}
   rpc NewTaskForExcel (NewExcel) returns (Task) {}
-  rpc AddRowToExcel (stream AddRow) returns (google.protobuf.Empty) {}
+  rpc AddRowToExcel (stream StreamRow) returns (google.protobuf.Empty) {}
   rpc CommitTaskForExcel (Task) returns (ExportURL) {}
 }
 
@@ -31,7 +31,7 @@ message Task{
   string taskId = 1;
 }
 
-message AddRow{
+message StreamRow{
   string taskId = 1;
   string sheet = 2;
   string axis = 3;

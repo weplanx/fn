@@ -1,6 +1,7 @@
 package common
 
 import (
+	"funcext/application/service/excel"
 	"funcext/application/service/storage"
 	"funcext/config"
 	"go.uber.org/fx"
@@ -11,4 +12,5 @@ type Dependency struct {
 
 	Config  *config.Config
 	Storage *storage.Storage
+	Excel   *excel.Excel
 }
