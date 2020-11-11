@@ -12,6 +12,7 @@ import (
 	"go.uber.org/fx"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"reflect"
 )
@@ -42,13 +43,13 @@ func LoadConfiguration() (cfg *config.Config, err error) {
 
 // Initialize local storage or object storage
 // reference config.example.yml
-func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
+func InitializeStorage(cfg *config.Config) (stg *storage.Service, err error) {
 	option := cfg.Storage
 	if reflect.DeepEqual(option, storage.Option{}) {
 		err = LoadStorageNotExists
 		return
 	}
-	stg = new(storage.Storage)
+	stg = new(storage.Service)
 	switch option.Drive {
 	case "local":
 		stg.Drive = drive.InitializeLocal(option.Option["path"].(string))
@@ -68,8 +69,8 @@ func InitializeStorage(cfg *config.Config) (stg *storage.Storage, err error) {
 }
 
 // Initialize Excel function logic
-func InitializeExcel() *excel.Excel {
-	ex := new(excel.Excel)
+func InitializeExcel() *excel.Service {
+	ex := new(excel.Service)
 	ex.Task = utils.NewTaskMap()
 	return ex
 }
@@ -77,6 +78,9 @@ func InitializeExcel() *excel.Excel {
 // Start http service
 // https://gin-gonic.com/docs/examples/custom-http-config/
 func HttpServer(lc fx.Lifecycle, cfg *config.Config) (serve *gin.Engine) {
+	if cfg.Debug != "" {
+		go http.ListenAndServe(cfg.Debug, nil)
+	}
 	//gin.SetMode(gin.TestMode)
 	serve = gin.New()
 	serve.Use(gin.Logger())

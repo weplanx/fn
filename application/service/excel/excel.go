@@ -14,15 +14,15 @@ var (
 	CommitError = errors.New("an exception occurred commit of Excel")
 )
 
-type Excel struct {
+type Service struct {
 	Task *utils.TaskMap
 }
 
-func (c *Excel) NewTask(sheets []string) (taskId string, err error) {
+func (c *Service) NewTask(sheetsName []string) (taskId string, err error) {
 	taskId = uuid.New().String()
 	file := excelize.NewFile()
 	streamWriterMap := utils.NewStreamWriterMap()
-	for _, sheet := range sheets {
+	for _, sheet := range sheetsName {
 		file.NewSheet(sheet)
 		var streamWriter *excelize.StreamWriter
 		streamWriter, err = file.NewStreamWriter(sheet)
@@ -47,27 +47,27 @@ func (c *Excel) NewTask(sheets []string) (taskId string, err error) {
 	return
 }
 
-//func (c *Excel) Append(data *pb.StreamData) (err error) {
-//	var task *utils.TaskOption
-//	var found bool
-//	if task, found = c.Task.Get(data.TaskId); !found {
-//		return AppendError
-//	}
-//	var streamWriter *excelize.StreamWriter
-//	if streamWriter, found = task.StreamWriterMap.Get(data.Sheet); !found {
-//		return AppendError
-//	}
-//	for _, row := range data.Rows {
-//		if err = streamWriter.SetRow(row.Axis, []interface{}{
-//			excelize.Cell{Value: row.Value},
-//		}); err != nil {
-//			return
-//		}
-//	}
-//	return
-//}
+func (c *Service) Append(data ChunkData) (err error) {
+	var task *utils.TaskOption
+	var found bool
+	if task, found = c.Task.Get(data.TaskId); !found {
+		return errors.New("a")
+	}
+	var streamWriter *excelize.StreamWriter
+	if streamWriter, found = task.StreamWriterMap.Get(data.SheetName); !found {
+		return errors.New("b")
+	}
+	for _, row := range data.Rows {
+		if err = streamWriter.SetRow(row.Axis, []interface{}{
+			excelize.Cell{Value: row.Value},
+		}); err != nil {
+			return
+		}
+	}
+	return
+}
 
-func (c *Excel) Commit(taskId string) (buf *bytes.Buffer, err error) {
+func (c *Service) Commit(taskId string) (buf *bytes.Buffer, err error) {
 	task, found := c.Task.Get(taskId)
 	if !found {
 		err = CommitError

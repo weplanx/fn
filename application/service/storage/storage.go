@@ -4,7 +4,7 @@ import (
 	"func-api/application/service/storage/drive"
 )
 
-type Storage struct {
+type Service struct {
 	Drive interface{}
 	drive.API
 }
@@ -14,6 +14,6 @@ type Option struct {
 	Option map[string]interface{} `yaml:"option"`
 }
 
-func (c *Storage) Put(filename string, body []byte) (err error) {
+func (c *Service) Put(filename string, body []byte) (err error) {
 	return c.Drive.(drive.API).Put(filename, body)
 }
