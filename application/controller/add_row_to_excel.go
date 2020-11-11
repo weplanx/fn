@@ -8,7 +8,7 @@ import (
 
 func (c *controller) AddRowToExcel(stream pb.Router_AddRowToExcelServer) (err error) {
 	for {
-		var data *pb.StreamRow
+		var data *pb.StreamData
 		data, err = stream.Recv()
 		if err == io.EOF {
 			return stream.SendAndClose(&empty.Empty{})
@@ -16,6 +16,7 @@ func (c *controller) AddRowToExcel(stream pb.Router_AddRowToExcelServer) (err er
 		if err != nil {
 			return
 		}
+
 		err = c.dep.Excel.Append(data)
 		if err != nil {
 			return

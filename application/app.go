@@ -25,6 +25,7 @@ func Application(dep common.Dependency) (err error) {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 	server := grpc.NewServer(
+		grpc.MaxRecvMsgSize(1024*1024*16),
 		grpc.StreamInterceptor(
 			grpcZap.StreamServerInterceptor(logger),
 		),

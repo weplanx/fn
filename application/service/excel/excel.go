@@ -48,7 +48,7 @@ func (c *Excel) NewTask(sheets []string) (taskId string, err error) {
 	return
 }
 
-func (c *Excel) Append(data *pb.StreamRow) (err error) {
+func (c *Excel) Append(data *pb.StreamData) (err error) {
 	var task *utils.TaskOption
 	var found bool
 	if task, found = c.Task.Get(data.TaskId); !found {
@@ -58,10 +58,12 @@ func (c *Excel) Append(data *pb.StreamRow) (err error) {
 	if streamWriter, found = task.StreamWriterMap.Get(data.Sheet); !found {
 		return AppendError
 	}
-	if err = streamWriter.SetRow(data.Axis, []interface{}{
-		excelize.Cell{Value: data.Value},
-	}); err != nil {
-		return
+	for _, row := range data.Rows {
+		if err = streamWriter.SetRow(row.Axis, []interface{}{
+			excelize.Cell{Value: row.Value},
+		}); err != nil {
+			return
+		}
 	}
 	return
 }
