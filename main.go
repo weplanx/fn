@@ -1,21 +1,20 @@
 package main
 
 import (
-	"funcext/application"
-	"funcext/bootstrap"
+	"func-api/application"
+	"func-api/bootstrap"
 	"go.uber.org/fx"
 )
 
 func main() {
 	fx.New(
-		fx.NopLogger,
+		//fx.NopLogger,
 		fx.Provide(
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeStorage,
 			bootstrap.InitializeExcel,
+			bootstrap.HttpServer,
 		),
-		fx.Invoke(
-			application.Application,
-		),
+		fx.Invoke(application.Application),
 	).Run()
 }

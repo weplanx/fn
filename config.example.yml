@@ -1,5 +1,5 @@
 debug: :6060
-listen: 127.0.0.1:6000
+listen: :6000
 storage:
   drive: local
   option:

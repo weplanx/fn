@@ -1,12 +1,15 @@
 package bootstrap
 
 import (
+	"context"
 	"errors"
-	"funcext/application/service/excel"
-	"funcext/application/service/excel/utils"
-	"funcext/application/service/storage"
-	"funcext/application/service/storage/drive"
-	"funcext/config"
+	"func-api/application/service/excel"
+	"func-api/application/service/excel/utils"
+	"func-api/application/service/storage"
+	"func-api/application/service/storage/drive"
+	"func-api/config"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/fx"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
@@ -21,12 +24,12 @@ var (
 // Load application configuration
 // reference config.example.yml
 func LoadConfiguration() (cfg *config.Config, err error) {
-	if _, err = os.Stat("./config/config.yml"); os.IsNotExist(err) {
+	if _, err = os.Stat("./config.yml"); os.IsNotExist(err) {
 		err = LoadConfigurationNotExists
 		return
 	}
 	var buf []byte
-	buf, err = ioutil.ReadFile("./config/config.yml")
+	buf, err = ioutil.ReadFile("./config.yml")
 	if err != nil {
 		return
 	}
@@ -69,4 +72,20 @@ func InitializeExcel() *excel.Excel {
 	ex := new(excel.Excel)
 	ex.Task = utils.NewTaskMap()
 	return ex
+}
+
+// Start http service
+// https://gin-gonic.com/docs/examples/custom-http-config/
+func HttpServer(lc fx.Lifecycle, cfg *config.Config) (serve *gin.Engine) {
+	//gin.SetMode(gin.TestMode)
+	serve = gin.New()
+	serve.Use(gin.Logger())
+	serve.Use(gin.Recovery())
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			go serve.Run(cfg.Listen)
+			return nil
+		},
+	})
+	return
 }

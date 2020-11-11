@@ -3,8 +3,7 @@ package excel
 import (
 	"bytes"
 	"errors"
-	"funcext/application/service/excel/utils"
-	pb "funcext/router"
+	"func-api/application/service/excel/utils"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/google/uuid"
 	"time"
@@ -48,25 +47,25 @@ func (c *Excel) NewTask(sheets []string) (taskId string, err error) {
 	return
 }
 
-func (c *Excel) Append(data *pb.StreamData) (err error) {
-	var task *utils.TaskOption
-	var found bool
-	if task, found = c.Task.Get(data.TaskId); !found {
-		return AppendError
-	}
-	var streamWriter *excelize.StreamWriter
-	if streamWriter, found = task.StreamWriterMap.Get(data.Sheet); !found {
-		return AppendError
-	}
-	for _, row := range data.Rows {
-		if err = streamWriter.SetRow(row.Axis, []interface{}{
-			excelize.Cell{Value: row.Value},
-		}); err != nil {
-			return
-		}
-	}
-	return
-}
+//func (c *Excel) Append(data *pb.StreamData) (err error) {
+//	var task *utils.TaskOption
+//	var found bool
+//	if task, found = c.Task.Get(data.TaskId); !found {
+//		return AppendError
+//	}
+//	var streamWriter *excelize.StreamWriter
+//	if streamWriter, found = task.StreamWriterMap.Get(data.Sheet); !found {
+//		return AppendError
+//	}
+//	for _, row := range data.Rows {
+//		if err = streamWriter.SetRow(row.Axis, []interface{}{
+//			excelize.Cell{Value: row.Value},
+//		}); err != nil {
+//			return
+//		}
+//	}
+//	return
+//}
 
 func (c *Excel) Commit(taskId string) (buf *bytes.Buffer, err error) {
 	task, found := c.Task.Get(taskId)

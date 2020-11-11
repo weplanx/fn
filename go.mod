@@ -1,10 +1,11 @@
-module funcext
+module func-api
 
 go 1.15
 
 require (
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.1
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.4+incompatible
+	github.com/gin-gonic/gin v1.6.3
 	github.com/golang/protobuf v1.4.3
 	github.com/google/uuid v1.1.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2

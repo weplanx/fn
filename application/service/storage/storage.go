@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"funcext/application/service/storage/drive"
+	"func-api/application/service/storage/drive"
 )
 
 type Storage struct {
