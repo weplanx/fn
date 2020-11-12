@@ -7,4 +7,4 @@ EXPOSE 6000
 
 VOLUME [ "app/config" ]
 
-CMD [ "./amqp-proxy" ]
+CMD [ "./func-api" ]
