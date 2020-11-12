@@ -5,17 +5,17 @@ import (
 )
 
 type NewTaskForExcelBody struct {
-	SheetsName []string `json:"sheets_name"`
+	SheetsDef []string `json:"sheets_name"`
 }
 
 func (c *controller) NewTaskForExcel(ctx *gin.Context) interface{} {
 	var body NewTaskForExcelBody
 	var err error
-	if err = ctx.ShouldBindJSON(&body); err != nil {
+	if err = ctx.BindJSON(&body); err != nil {
 		return c.error(err)
 	}
 	var taskId string
-	if taskId, err = c.dep.Excel.NewTask(body.SheetsName); err != nil {
+	if taskId, err = c.dep.Excel.NewTask(body.SheetsDef); err != nil {
 		return c.error(err)
 	}
 	return c.result(gin.H{

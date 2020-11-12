@@ -13,7 +13,7 @@ type CommitTaskForExcelBody struct {
 func (c *controller) CommitTaskForExcel(ctx *gin.Context) interface{} {
 	var body CommitTaskForExcelBody
 	var err error
-	if err = ctx.ShouldBindJSON(&body); err != nil {
+	if err = ctx.BindJSON(&body); err != nil {
 		return c.error(err)
 	}
 	var buf *bytes.Buffer

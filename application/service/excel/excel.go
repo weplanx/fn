@@ -3,6 +3,7 @@ package excel
 import (
 	"bytes"
 	"errors"
+	"func-api/application/common/typ"
 	"func-api/application/service/excel/utils"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/google/uuid"
@@ -18,18 +19,18 @@ type Service struct {
 	Task *utils.TaskMap
 }
 
-func (c *Service) NewTask(sheetsName []string) (taskId string, err error) {
+func (c *Service) NewTask(sheetsDef []string) (taskId string, err error) {
 	taskId = uuid.New().String()
 	file := excelize.NewFile()
 	streamWriterMap := utils.NewStreamWriterMap()
-	for _, sheet := range sheetsName {
-		file.NewSheet(sheet)
+	for _, sheetName := range sheetsDef {
+		file.NewSheet(sheetName)
 		var streamWriter *excelize.StreamWriter
-		streamWriter, err = file.NewStreamWriter(sheet)
+		streamWriter, err = file.NewStreamWriter(sheetName)
 		if err != nil {
 			return
 		}
-		streamWriterMap.Put(sheet, streamWriter)
+		streamWriterMap.Put(sheetName, streamWriter)
 	}
 	go func() {
 		timer := time.NewTimer(time.Minute * 30)
@@ -41,22 +42,23 @@ func (c *Service) NewTask(sheetsName []string) (taskId string, err error) {
 		}
 	}()
 	c.Task.Put(taskId, &utils.TaskOption{
-		File:            file,
-		StreamWriterMap: streamWriterMap,
+		File:      file,
+		StreamMap: streamWriterMap,
 	})
 	return
 }
 
-func (c *Service) Append(data ChunkData) (err error) {
+func (c *Service) Append(data typ.ChunkData) (err error) {
 	var task *utils.TaskOption
 	var found bool
 	if task, found = c.Task.Get(data.TaskId); !found {
-		return errors.New("a")
+		return AppendError
 	}
 	var streamWriter *excelize.StreamWriter
-	if streamWriter, found = task.StreamWriterMap.Get(data.SheetName); !found {
-		return errors.New("b")
+	if streamWriter, found = task.StreamMap.Get(data.SheetName); !found {
+		return AppendError
 	}
+	task.File.Lock()
 	for _, row := range data.Rows {
 		if err = streamWriter.SetRow(row.Axis, []interface{}{
 			excelize.Cell{Value: row.Value},
@@ -64,6 +66,7 @@ func (c *Service) Append(data ChunkData) (err error) {
 			return
 		}
 	}
+	task.File.Unlock()
 	return
 }
 
@@ -73,15 +76,12 @@ func (c *Service) Commit(taskId string) (buf *bytes.Buffer, err error) {
 		err = CommitError
 		return
 	}
-	if err = task.StreamWriterMap.Flush(); err != nil {
+	if err = task.StreamMap.Flush(); err != nil {
 		return
 	}
 	if buf, err = task.File.WriteToBuffer(); err != nil {
 		return
 	}
-	err = c.Task.Remove(taskId)
-	if err != nil {
-		return
-	}
+	c.Task.Remove(taskId)
 	return
 }

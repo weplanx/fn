@@ -2,7 +2,7 @@ package controller
 
 import (
 	"bytes"
-	"func-api/application/service/excel"
+	"func-api/application/common/typ"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -10,20 +10,20 @@ import (
 )
 
 type SimpleExcelBody struct {
-	Sheets []excel.Sheet `json:"sheets"`
+	Sheets []typ.Sheet `json:"sheets"`
 }
 
 func (c *controller) SimpleExcel(ctx *gin.Context) interface{} {
 	var body SimpleExcelBody
 	var err error
-	if err = ctx.ShouldBindJSON(&body); err != nil {
+	if err = ctx.BindJSON(&body); err != nil {
 		return c.error(err)
 	}
 	file := excelize.NewFile()
 	var wg sync.WaitGroup
 	wg.Add(len(body.Sheets))
 	for _, sheet := range body.Sheets {
-		go func(sheet excel.Sheet) {
+		go func(sheet typ.Sheet) {
 			defer wg.Done()
 			var streamWriter *excelize.StreamWriter
 			if streamWriter, err = file.NewStreamWriter(sheet.Name); err != nil {

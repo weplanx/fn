@@ -10,7 +10,6 @@ require (
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/spf13/afero v1.4.1
 	go.uber.org/fx v1.13.1
-	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )

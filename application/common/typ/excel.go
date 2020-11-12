@@ -1,4 +1,4 @@
-package excel
+package typ
 
 type Sheet struct {
 	Name string `json:"name"`

@@ -1,5 +1,12 @@
 package utils
 
+import "github.com/360EntSecGroup-Skylar/excelize/v2"
+
+type TaskOption struct {
+	File      *excelize.File
+	StreamMap *streamMap
+}
+
 type TaskMap struct {
 	hashMap map[string]*TaskOption
 }
@@ -22,9 +29,7 @@ func (c *TaskMap) Get(taskId string) (option *TaskOption, found bool) {
 	return
 }
 
-func (c *TaskMap) Remove(taskId string) (err error) {
-	if option, found := c.hashMap[taskId]; found {
-		err = option.StreamWriterMap.Clear()
-	}
+func (c *TaskMap) Remove(taskId string) {
+	delete(c.hashMap, taskId)
 	return
 }
