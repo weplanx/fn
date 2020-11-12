@@ -17,7 +17,7 @@ func (c *controller) SimpleExcel(ctx *gin.Context) interface{} {
 	var body SimpleExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
-		return c.error(err)
+		return err
 	}
 	file := excelize.NewFile()
 	var wg sync.WaitGroup
@@ -44,13 +44,13 @@ func (c *controller) SimpleExcel(ctx *gin.Context) interface{} {
 	wg.Wait()
 	var buf *bytes.Buffer
 	if buf, err = file.WriteToBuffer(); err != nil {
-		return c.error(err)
+		return err
 	}
 	filename := uuid.New().String() + ".xlsx"
 	if err = c.dep.Storage.Put(filename, buf.Bytes()); err != nil {
-		return c.error(err)
+		return err
 	}
-	return c.result(gin.H{
+	return gin.H{
 		"url": filename,
-	})
+	}
 }

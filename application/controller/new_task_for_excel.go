@@ -12,13 +12,13 @@ func (c *controller) NewTaskForExcel(ctx *gin.Context) interface{} {
 	var body NewTaskForExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
-		return c.error(err)
+		return err
 	}
 	var taskId string
 	if taskId, err = c.dep.Excel.NewTask(body.SheetsDef); err != nil {
-		return c.error(err)
+		return err
 	}
-	return c.result(gin.H{
+	return gin.H{
 		"task_id": taskId,
-	})
+	}
 }

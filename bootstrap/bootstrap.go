@@ -80,8 +80,10 @@ func InitializeExcel() *excel.Service {
 func HttpServer(lc fx.Lifecycle, cfg *config.Config) (serve *gin.Engine) {
 	if cfg.Debug != "" {
 		go http.ListenAndServe(cfg.Debug, nil)
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
 	}
-	//gin.SetMode(gin.TestMode)
 	serve = gin.New()
 	serve.Use(gin.Logger())
 	serve.Use(gin.Recovery())

@@ -14,17 +14,17 @@ func (c *controller) CommitTaskForExcel(ctx *gin.Context) interface{} {
 	var body CommitTaskForExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
-		return c.error(err)
+		return err
 	}
 	var buf *bytes.Buffer
 	if buf, err = c.dep.Excel.Commit(body.TaskId); err != nil {
-		return c.error(err)
+		return err
 	}
 	filename := uuid.New().String() + ".xlsx"
 	if err = c.dep.Storage.Put(filename, buf.Bytes()); err != nil {
-		return c.error(err)
+		return err
 	}
-	return c.result(gin.H{
+	return gin.H{
 		"url": filename,
-	})
+	}
 }

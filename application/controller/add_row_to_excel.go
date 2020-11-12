@@ -9,10 +9,10 @@ func (c *controller) AddRowToExcel(ctx *gin.Context) interface{} {
 	var body typ.ChunkData
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
-		return c.error(err)
+		return err
 	}
 	if err = c.dep.Excel.Append(body); err != nil {
-		return c.error(err)
+		return err
 	}
-	return c.ok()
+	return true
 }
