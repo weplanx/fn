@@ -36,7 +36,7 @@ func (c *streamMap) Flush() (err error) {
 	return
 }
 
-func (c *streamMap) Remove(sheetName string) (err error) {
-	delete(c.hashMap, sheetName)
+func (c *streamMap) Clear() {
+	c.hashMap = make(map[string]*excelize.StreamWriter)
 	return
 }

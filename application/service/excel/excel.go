@@ -7,7 +7,6 @@ import (
 	"func-api/application/service/excel/utils"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/google/uuid"
-	"time"
 )
 
 var (
@@ -32,15 +31,6 @@ func (c *Service) NewTask(sheetsDef []string) (taskId string, err error) {
 		}
 		streamWriterMap.Put(sheetName, streamWriter)
 	}
-	go func() {
-		timer := time.NewTimer(time.Minute * 30)
-		defer timer.Stop()
-		select {
-		case <-timer.C:
-			c.Task.Remove(taskId)
-			break
-		}
-	}()
 	c.Task.Put(taskId, &utils.TaskOption{
 		File:      file,
 		StreamMap: streamWriterMap,
@@ -82,6 +72,8 @@ func (c *Service) Commit(taskId string) (buf *bytes.Buffer, err error) {
 	if buf, err = task.File.WriteToBuffer(); err != nil {
 		return
 	}
+	task.StreamMap.Clear()
+	c.Task.Termination(taskId)
 	c.Task.Remove(taskId)
 	return
 }

@@ -24,6 +24,7 @@ func (c *controller) CommitTaskForExcel(ctx *gin.Context) interface{} {
 	if err = c.dep.Storage.Put(filename, buf.Bytes()); err != nil {
 		return err
 	}
+	buf.Reset()
 	return gin.H{
 		"url": filename,
 	}
