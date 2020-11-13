@@ -1,5 +1,11 @@
 debug: :6060
 listen: :6000
+database:
+  dsn: user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local
+  max_idle_conns: 10
+  max_open_conns: 100
+  conn_max_lifetime: 3600
+  table_prefix:
 storage:
   drive: local
   option:

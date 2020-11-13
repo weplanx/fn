@@ -12,4 +12,6 @@ require (
 	go.uber.org/fx v1.13.1
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+	gorm.io/driver/mysql v1.0.3
+	gorm.io/gorm v1.20.6
 )
