@@ -4,12 +4,12 @@ import (
 	"func-api/application/common"
 )
 
-type controller struct {
-	dep *common.Dependency
+type Controller struct {
+	*common.Dependency
 }
 
-func New(dep *common.Dependency) *controller {
-	c := new(controller)
-	c.dep = dep
+func New(dep *common.Dependency) *Controller {
+	c := new(Controller)
+	c.Dependency = dep
 	return c
 }

@@ -13,7 +13,7 @@ type SimpleExcelBody struct {
 	Sheets []typ.Sheet `json:"sheets"`
 }
 
-func (c *controller) SimpleExcel(ctx *gin.Context) interface{} {
+func (c *Controller) SimpleExcel(ctx *gin.Context) interface{} {
 	var body SimpleExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
@@ -47,7 +47,7 @@ func (c *controller) SimpleExcel(ctx *gin.Context) interface{} {
 		return err
 	}
 	filename := uuid.New().String() + ".xlsx"
-	if err = c.dep.Storage.Put(filename, buf.Bytes()); err != nil {
+	if err = c.Storage.Put(filename, buf.Bytes()); err != nil {
 		return err
 	}
 	return gin.H{

@@ -1,6 +1,8 @@
 package config
 
-import "func-api/application/service/storage"
+import (
+	"func-api/application/service/storage"
+)
 
 type Config struct {
 	Debug   string         `yaml:"debug"`
