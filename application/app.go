@@ -2,17 +2,20 @@ package application
 
 import (
 	"func-api/application/common"
-	"func-api/application/controller"
+	"func-api/application/controller/excel"
 	"github.com/gin-gonic/gin"
 	_ "net/http/pprof"
 )
 
 func Application(router *gin.Engine, dep common.Dependency) (err error) {
-	control := controller.New(&dep)
-	router.POST("/simple_excel", common.Handle(control.SimpleExcel))
-	router.POST("/sql_excel", common.Handle(control.SqlExcel))
-	router.POST("/new_task_for_excel", common.Handle(control.NewTaskForExcel))
-	router.POST("/add_row_to_excel", common.Handle(control.AddRowToExcel))
-	router.POST("/commit_task_for_excel", common.Handle(control.CommitTaskForExcel))
+	excelGroup := router.Group("/excel")
+	{
+		control := excel.New(&dep)
+		excelGroup.POST("/simple", common.Handle(control.Simple))
+		excelGroup.POST("/new_task", common.Handle(control.NewTask))
+		excelGroup.POST("/add_row", common.Handle(control.AddRow))
+		excelGroup.POST("/commit_task", common.Handle(control.CommitTask))
+	}
+
 	return
 }

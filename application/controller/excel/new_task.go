@@ -1,4 +1,4 @@
-package controller
+package excel
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,7 +8,7 @@ type NewTaskForExcelBody struct {
 	SheetsDef []string `json:"sheets_name"`
 }
 
-func (c *Controller) NewTaskForExcel(ctx *gin.Context) interface{} {
+func (c *Controller) NewTask(ctx *gin.Context) interface{} {
 	var body NewTaskForExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {

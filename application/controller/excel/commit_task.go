@@ -1,4 +1,4 @@
-package controller
+package excel
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ type CommitTaskForExcelBody struct {
 	TaskId string `json:"task_id"`
 }
 
-func (c *Controller) CommitTaskForExcel(ctx *gin.Context) interface{} {
+func (c *Controller) CommitTask(ctx *gin.Context) interface{} {
 	var body CommitTaskForExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {

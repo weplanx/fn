@@ -1,4 +1,4 @@
-package controller
+package excel
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ type SimpleExcelBody struct {
 	Sheets []typ.Sheet `json:"sheets"`
 }
 
-func (c *Controller) SimpleExcel(ctx *gin.Context) interface{} {
+func (c *Controller) Simple(ctx *gin.Context) interface{} {
 	var body SimpleExcelBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {

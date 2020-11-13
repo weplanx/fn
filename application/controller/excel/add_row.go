@@ -1,11 +1,11 @@
-package controller
+package excel
 
 import (
 	"func-api/application/common/typ"
 	"github.com/gin-gonic/gin"
 )
 
-func (c *Controller) AddRowToExcel(ctx *gin.Context) interface{} {
+func (c *Controller) AddRow(ctx *gin.Context) interface{} {
 	var body typ.ChunkData
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
