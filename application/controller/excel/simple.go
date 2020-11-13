@@ -6,42 +6,22 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"sync"
 )
 
-type SimpleExcelBody struct {
+type _SimpleBody struct {
 	Sheets []typ.Sheet `json:"sheets"`
 }
 
 func (c *Controller) Simple(ctx *gin.Context) interface{} {
-	var body SimpleExcelBody
+	var body _SimpleBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
 		return err
 	}
-	file := excelize.NewFile()
-	var wg sync.WaitGroup
-	wg.Add(len(body.Sheets))
-	for _, sheet := range body.Sheets {
-		go func(sheet typ.Sheet) {
-			defer wg.Done()
-			var streamWriter *excelize.StreamWriter
-			if streamWriter, err = file.NewStreamWriter(sheet.Name); err != nil {
-				return
-			}
-			for _, row := range sheet.Rows {
-				if err = streamWriter.SetRow(row.Axis, []interface{}{
-					excelize.Cell{Value: row.Value},
-				}); err != nil {
-					return
-				}
-			}
-			if err = streamWriter.Flush(); err != nil {
-				return
-			}
-		}(sheet)
+	var file *excelize.File
+	if file, err = c.Excel.Simple(body.Sheets); err != nil {
+		return err
 	}
-	wg.Wait()
 	var buf *bytes.Buffer
 	if buf, err = file.WriteToBuffer(); err != nil {
 		return err

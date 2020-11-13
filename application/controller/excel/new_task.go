@@ -4,12 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type NewTaskForExcelBody struct {
+type _NewTaskBody struct {
 	SheetsDef []string `json:"sheets_name"`
 }
 
 func (c *Controller) NewTask(ctx *gin.Context) interface{} {
-	var body NewTaskForExcelBody
+	var body _NewTaskBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
 		return err

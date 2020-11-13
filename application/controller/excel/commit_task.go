@@ -7,12 +7,12 @@ import (
 	"runtime/debug"
 )
 
-type CommitTaskForExcelBody struct {
+type _CommitTaskBody struct {
 	TaskId string `json:"task_id"`
 }
 
 func (c *Controller) CommitTask(ctx *gin.Context) interface{} {
-	var body CommitTaskForExcelBody
+	var body _CommitTaskBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
 		return err

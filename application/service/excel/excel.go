@@ -7,6 +7,7 @@ import (
 	"func-api/application/service/excel/utils"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/google/uuid"
+	"sync"
 )
 
 var (
@@ -16,6 +17,33 @@ var (
 
 type Service struct {
 	Task *utils.TaskMap
+}
+
+func (c *Service) Simple(Sheets []typ.Sheet) (file *excelize.File, err error) {
+	file = excelize.NewFile()
+	var wg sync.WaitGroup
+	wg.Add(len(Sheets))
+	for _, sheet := range Sheets {
+		go func(sheet typ.Sheet) {
+			defer wg.Done()
+			var streamWriter *excelize.StreamWriter
+			if streamWriter, err = file.NewStreamWriter(sheet.Name); err != nil {
+				return
+			}
+			for _, row := range sheet.Rows {
+				if err = streamWriter.SetRow(row.Axis, []interface{}{
+					excelize.Cell{Value: row.Value},
+				}); err != nil {
+					return
+				}
+			}
+			if err = streamWriter.Flush(); err != nil {
+				return
+			}
+		}(sheet)
+	}
+	wg.Wait()
+	return
 }
 
 func (c *Service) NewTask(sheetsDef []string) (taskId string, err error) {
