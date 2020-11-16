@@ -11,7 +11,6 @@ func main() {
 		fx.NopLogger,
 		fx.Provide(
 			bootstrap.LoadConfiguration,
-			bootstrap.InitializeDatabase,
 			bootstrap.InitializeStorage,
 			bootstrap.InitializeExcel,
 			bootstrap.HttpServer,

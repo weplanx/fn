@@ -6,14 +6,12 @@ import (
 	"func-api/config"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
-	"gorm.io/gorm"
 )
 
 type Dependency struct {
 	fx.In
 
 	Config  *config.Config
-	Db      *gorm.DB
 	Storage *storage.Service
 	Excel   *excel.Service
 }
