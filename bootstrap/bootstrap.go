@@ -5,6 +5,7 @@ import (
 	"errors"
 	"func-api/application/service/excel"
 	"func-api/application/service/excel/utils"
+	"func-api/application/service/qrcode"
 	"func-api/application/service/storage"
 	"func-api/application/service/storage/drive"
 	"func-api/config"
@@ -29,12 +30,12 @@ func LoadConfiguration() (cfg *config.Config, err error) {
 		err = LoadConfigurationNotExists
 		return
 	}
-	var buf []byte
-	buf, err = ioutil.ReadFile("./config/config.yml")
+	var bs []byte
+	bs, err = ioutil.ReadFile("./config/config.yml")
 	if err != nil {
 		return
 	}
-	err = yaml.Unmarshal(buf, &cfg)
+	err = yaml.Unmarshal(bs, &cfg)
 	if err != nil {
 		return
 	}
@@ -73,6 +74,13 @@ func InitializeExcel() *excel.Service {
 	ex := new(excel.Service)
 	ex.Task = utils.NewTaskMap()
 	return ex
+}
+
+// Initialize QRCode function logic
+func InitializeQRCode(cfg *config.Config) *qrcode.Service {
+	qr := new(qrcode.Service)
+	qr.Fonts = cfg.Fonts
+	return qr
 }
 
 // Start http service

@@ -2,6 +2,7 @@ package common
 
 import (
 	"func-api/application/service/excel"
+	"func-api/application/service/qrcode"
 	"func-api/application/service/storage"
 	"func-api/config"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ type Dependency struct {
 	Config  *config.Config
 	Storage *storage.Service
 	Excel   *excel.Service
+	QRCode  *qrcode.Service
 }
 
 func Handle(handlersFn interface{}) gin.HandlerFunc {

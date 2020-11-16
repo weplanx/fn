@@ -3,7 +3,7 @@ package excel
 import (
 	"bytes"
 	"errors"
-	"func-api/application/common/typ"
+	"func-api/application/service/excel/typ"
 	"func-api/application/service/excel/utils"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/google/uuid"

@@ -1,7 +1,7 @@
 package excel
 
 import (
-	"func-api/application/common/typ"
+	"func-api/application/service/excel/typ"
 	"github.com/gin-gonic/gin"
 )
 

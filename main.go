@@ -13,6 +13,7 @@ func main() {
 			bootstrap.LoadConfiguration,
 			bootstrap.InitializeStorage,
 			bootstrap.InitializeExcel,
+			bootstrap.InitializeQRCode,
 			bootstrap.HttpServer,
 		),
 		fx.Invoke(application.Application),

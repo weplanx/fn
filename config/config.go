@@ -5,7 +5,8 @@ import (
 )
 
 type Config struct {
-	Debug   string         `yaml:"debug"`
-	Listen  string         `yaml:"listen"`
-	Storage storage.Option `yaml:"storage"`
+	Debug   string            `yaml:"debug"`
+	Listen  string            `yaml:"listen"`
+	Storage storage.Option    `yaml:"storage"`
+	Fonts   map[string]string `yaml:"fonts"`
 }

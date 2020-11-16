@@ -2,7 +2,7 @@ package excel
 
 import (
 	"bytes"
-	"func-api/application/common/typ"
+	"func-api/application/service/excel/typ"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
