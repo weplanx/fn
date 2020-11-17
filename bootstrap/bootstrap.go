@@ -12,10 +12,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 	"gopkg.in/yaml.v3"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"reflect"
+	"time"
 )
 
 var (
@@ -38,6 +42,38 @@ func LoadConfiguration() (cfg *config.Config, err error) {
 	err = yaml.Unmarshal(bs, &cfg)
 	if err != nil {
 		return
+	}
+	return
+}
+
+// Initialize database configuration
+// If it is another database, replace the driver here
+// gorm.Open(mysql.Open(option.Dsn),...)
+// reference https://gorm.io/docs/connecting_to_the_database.html
+func InitializeDatabase(cfg *config.Config) (db *gorm.DB, err error) {
+	option := cfg.Database
+	db, err = gorm.Open(mysql.Open(option.Dsn), &gorm.Config{
+		Logger: nil,
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   option.TablePrefix,
+			SingularTable: true,
+		},
+	})
+	if err != nil {
+		return
+	}
+	sqlDB, err := db.DB()
+	if err != nil {
+		return
+	}
+	if option.MaxIdleConns != 0 {
+		sqlDB.SetMaxIdleConns(option.MaxIdleConns)
+	}
+	if option.MaxOpenConns != 0 {
+		sqlDB.SetMaxOpenConns(option.MaxOpenConns)
+	}
+	if option.ConnMaxLifetime != 0 {
+		sqlDB.SetConnMaxLifetime(time.Second * time.Duration(option.ConnMaxLifetime))
 	}
 	return
 }

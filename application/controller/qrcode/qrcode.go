@@ -2,9 +2,9 @@ package qrcode
 
 import (
 	"bytes"
+	"func-api/application/model"
 	"func-api/application/service/qrcode"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"image"
 	"image/png"
 )
@@ -23,11 +23,9 @@ func (c *Controller) FactoryQRCode(ctx *gin.Context) interface{} {
 	if err = png.Encode(buf, im); err != nil {
 		return err
 	}
-	filename := uuid.New().String() + ".png"
-	if err = c.Storage.Put(filename, buf.Bytes()); err != nil {
-		return err
-	}
-	return gin.H{
-		"url": filename,
-	}
+	c.Db.Create(&model.Object{
+		Key:   body.Content,
+		Value: buf.Bytes(),
+	})
+	return true
 }

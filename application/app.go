@@ -16,6 +16,7 @@ func Application(router *gin.Engine, dep common.Dependency) (err error) {
 		excelGroup.POST("/new_task", common.Handle(control.NewTask))
 		excelGroup.POST("/add_row", common.Handle(control.AddRow))
 		excelGroup.POST("/commit_task", common.Handle(control.CommitTask))
+		excelGroup.POST("/qrcode_tpl", common.Handle(control.QRCodeTpl))
 	}
 	extraGroup := router.Group("/extra")
 	{
