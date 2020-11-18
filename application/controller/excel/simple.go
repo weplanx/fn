@@ -6,6 +6,7 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"runtime/debug"
 	"time"
 )
 
@@ -32,6 +33,8 @@ func (c *Controller) Simple(ctx *gin.Context) interface{} {
 	if err = c.Storage.Put(filename, buf.Bytes()); err != nil {
 		return err
 	}
+	buf.Reset()
+	debug.FreeOSMemory()
 	return gin.H{
 		"url": filename,
 	}

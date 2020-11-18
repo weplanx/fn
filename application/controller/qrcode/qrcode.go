@@ -9,7 +9,7 @@ import (
 	"image/png"
 )
 
-func (c *Controller) FactoryQRCode(ctx *gin.Context) interface{} {
+func (c *Controller) Factory(ctx *gin.Context) interface{} {
 	var body qrcode.Option
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
@@ -23,9 +23,22 @@ func (c *Controller) FactoryQRCode(ctx *gin.Context) interface{} {
 	if err = png.Encode(buf, im); err != nil {
 		return err
 	}
-	c.Db.Create(&model.Object{
-		Key:   body.Content,
-		Value: buf.Bytes(),
-	})
+	var count int64
+	c.Db.Model(&model.Object{}).Where("`key` = ?", body.Content).Count(&count)
+	if count == 0 {
+		if err = c.Db.Create(&model.Object{
+			Key:   body.Content,
+			Value: buf.Bytes(),
+		}).Error; err != nil {
+			return err
+		}
+	} else {
+		if err = c.Db.Model(&model.Object{}).
+			Where("`key` = ?", body.Content).
+			Update("value", buf.Bytes()).
+			Error; err != nil {
+			return err
+		}
+	}
 	return true
 }

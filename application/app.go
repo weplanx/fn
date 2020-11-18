@@ -18,11 +18,10 @@ func Application(router *gin.Engine, dep common.Dependency) (err error) {
 		excelGroup.POST("/commit_task", common.Handle(control.CommitTask))
 		excelGroup.POST("/qrcode_tpl", common.Handle(control.QRCodeTpl))
 	}
-	extraGroup := router.Group("/extra")
+	qrGroup := router.Group("/qrcode")
 	{
 		qr := qrcode.New(&dep)
-		extraGroup.POST("/factory_qrcode", common.Handle(qr.FactoryQRCode))
+		qrGroup.POST("/factory", common.Handle(qr.Factory))
 	}
-
 	return
 }
