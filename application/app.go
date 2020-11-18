@@ -21,7 +21,8 @@ func Application(router *gin.Engine, dep common.Dependency) (err error) {
 	qrGroup := router.Group("/qrcode")
 	{
 		qr := qrcode.New(&dep)
-		qrGroup.POST("/factory", common.Handle(qr.Factory))
+		qrGroup.POST("/testing", common.Handle(qr.Testing))
+		qrGroup.POST("/pre_build", common.Handle(qr.PreBuilt))
 	}
 	return
 }

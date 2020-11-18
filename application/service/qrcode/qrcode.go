@@ -1,7 +1,6 @@
 package qrcode
 
 import (
-	"bytes"
 	"errors"
 	"github.com/fogleman/gg"
 	"github.com/skip2/go-qrcode"
@@ -30,15 +29,11 @@ type Font struct {
 }
 
 func (c *Service) Factory(option Option) (im image.Image, err error) {
-	var bs []byte
-	if bs, err = qrcode.Encode(option.Content, qrcode.Medium, option.Size); err != nil {
+	var qr *qrcode.QRCode
+	if qr, err = qrcode.New(option.Content, qrcode.Medium); err != nil {
 		return
 	}
-	var qr image.Image
-	if qr, _, err = image.Decode(bytes.NewReader(bs)); err != nil {
-		return
-	}
-	dc := gg.NewContextForImage(qr)
+	dc := gg.NewContextForImage(qr.Image(option.Size))
 	if option.Font != (Font{}) {
 		font := option.Font
 		if typ, ok := c.Fonts[font.Type]; ok {
