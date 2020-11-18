@@ -12,7 +12,13 @@ storage:
     path: ./public
 #  drive: oss
 #  option:
-#    endpoint: http://oss-cn-shenzhen.aliyuncs.com
+#    endpoint: oss-cn-shenzhen.aliyuncs.com
+#    access_key_id:
+#    access_key_secret:
+#    bucket_name:
+#  drive: obs
+#  option:
+#    endpoint: obs.cn-south-1.myhuaweicloud.com
 #    access_key_id:
 #    access_key_secret:
 #    bucket_name:

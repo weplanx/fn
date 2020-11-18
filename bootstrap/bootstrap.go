@@ -101,6 +101,16 @@ func InitializeStorage(cfg *config.Config) (stg *storage.Service, err error) {
 			return
 		}
 		break
+	case "obs":
+		if stg.Drive, err = drive.InitializeObs(drive.ObsOption{
+			Endpoint:        option.Option["endpoint"].(string),
+			AccessKeyId:     option.Option["access_key_id"].(string),
+			AccessKeySecret: option.Option["access_key_secret"].(string),
+			BucketName:      option.Option["bucket_name"].(string),
+		}); err != nil {
+			return
+		}
+		break
 	}
 	return
 }

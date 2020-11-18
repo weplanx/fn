@@ -35,6 +35,6 @@ func InitializeOss(option OssOption) (c *Oss, err error) {
 	return
 }
 
-func (c *Oss) Put(filename string, body []byte) (err error) {
+func (c *Oss) Put(filename string, body []byte) error {
 	return c.bucket.PutObject(filename, bytes.NewReader(body))
 }

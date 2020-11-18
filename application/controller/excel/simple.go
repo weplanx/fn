@@ -6,6 +6,7 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"time"
 )
 
 type _SimpleBody struct {
@@ -26,7 +27,8 @@ func (c *Controller) Simple(ctx *gin.Context) interface{} {
 	if buf, err = file.WriteToBuffer(); err != nil {
 		return err
 	}
-	filename := uuid.New().String() + ".xlsx"
+	date := time.Now().Format("2006-01-02")
+	filename := date + "/" + uuid.New().String() + ".xlsx"
 	if err = c.Storage.Put(filename, buf.Bytes()); err != nil {
 		return err
 	}

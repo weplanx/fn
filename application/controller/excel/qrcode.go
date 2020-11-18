@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"strconv"
+	"time"
 )
 
 type _QRCodeBody struct {
@@ -47,7 +48,8 @@ func (c *Controller) QRCodeTpl(ctx *gin.Context) interface{} {
 	if buf, err = file.WriteToBuffer(); err != nil {
 		return err
 	}
-	filename := uuid.New().String() + ".xlsx"
+	date := time.Now().Format("2006-01-02")
+	filename := date + "/" + uuid.New().String() + ".xlsx"
 	if err = c.Storage.Put(filename, buf.Bytes()); err != nil {
 		return err
 	}

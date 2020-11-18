@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"runtime/debug"
+	"time"
 )
 
 type _CommitTaskBody struct {
@@ -21,7 +22,8 @@ func (c *Controller) CommitTask(ctx *gin.Context) interface{} {
 	if buf, err = c.Excel.Commit(body.TaskId); err != nil {
 		return err
 	}
-	filename := uuid.New().String() + ".xlsx"
+	date := time.Now().Format("2006-01-02")
+	filename := date + "/" + uuid.New().String() + ".xlsx"
 	if err = c.Storage.Put(filename, buf.Bytes()); err != nil {
 		return err
 	}
