@@ -22,5 +22,11 @@ storage:
 #    access_key_id:
 #    access_key_secret:
 #    bucket_name:
+#  drive: cos
+#  option:
+#    region: ap-guangzhou
+#    secret_id:
+#    secret_key:
+#    bucket_name:
 fonts:
   consola: ./fonts/consola.ttf

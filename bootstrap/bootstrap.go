@@ -80,6 +80,9 @@ func InitializeDatabase(cfg *config.Config) (db *gorm.DB, err error) {
 
 // Initialize local storage or object storage
 // reference config.example.yml
+// oss https://help.aliyun.com/document_detail/32144.html?spm=5176.87240.400427.53.55df4614cxcDia
+// obs https://support.huaweicloud.com/sdk-go-devg-obs/obs_23_0101.html
+// cos https://cloud.tencent.com/document/product/436/31215
 func InitializeStorage(cfg *config.Config) (stg *storage.Service, err error) {
 	option := cfg.Storage
 	if reflect.DeepEqual(option, storage.Option{}) {
@@ -107,6 +110,16 @@ func InitializeStorage(cfg *config.Config) (stg *storage.Service, err error) {
 			AccessKeyId:     option.Option["access_key_id"].(string),
 			AccessKeySecret: option.Option["access_key_secret"].(string),
 			BucketName:      option.Option["bucket_name"].(string),
+		}); err != nil {
+			return
+		}
+		break
+	case "cos":
+		if stg.Drive, err = drive.InitializeCos(drive.CosOption{
+			Region:     option.Option["region"].(string),
+			SecretId:   option.Option["secret_id"].(string),
+			SecretKey:  option.Option["secret_key"].(string),
+			BucketName: option.Option["bucket_name"].(string),
 		}); err != nil {
 			return
 		}

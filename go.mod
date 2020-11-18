@@ -12,6 +12,7 @@ require (
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/spf13/afero v1.4.1
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.11
 	go.uber.org/fx v1.13.1
 	golang.org/x/image v0.0.0-20200927104501-e162460cd6b5 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
