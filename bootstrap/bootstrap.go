@@ -15,6 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"io/ioutil"
 	"net/http"
@@ -54,7 +55,9 @@ func LoadConfiguration() (cfg *config.Config, err error) {
 func InitializeDatabase(cfg *config.Config) (db *gorm.DB, err error) {
 	option := cfg.Database
 	db, err = gorm.Open(mysql.Open(option.Dsn), &gorm.Config{
-		Logger: nil,
+		Logger:                 logger.Default.LogMode(logger.Silent),
+		SkipDefaultTransaction: true,
+		PrepareStmt:            true,
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   option.TablePrefix,
 			SingularTable: true,
@@ -162,7 +165,9 @@ func HttpServer(lc fx.Lifecycle, cfg *config.Config) (serve *gin.Engine) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	serve = gin.New()
-	serve.Use(gin.Logger())
+	if cfg.Logger {
+		serve.Use(gin.Logger())
+	}
 	serve.Use(gin.Recovery())
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
