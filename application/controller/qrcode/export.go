@@ -1,4 +1,4 @@
-package excel
+package qrcode
 
 import (
 	"bytes"
@@ -12,12 +12,12 @@ import (
 	"time"
 )
 
-type _QRCodeBody struct {
+type _ExportBody struct {
 	Lists []qrcode.Option `json:"lists"`
 }
 
-func (c *Controller) QRCodeTpl(ctx *gin.Context) interface{} {
-	var body _QRCodeBody
+func (c *Controller) Export(ctx *gin.Context) interface{} {
+	var body _ExportBody
 	var err error
 	if err = ctx.BindJSON(&body); err != nil {
 		return err
@@ -30,17 +30,12 @@ func (c *Controller) QRCodeTpl(ctx *gin.Context) interface{} {
 	var objects []model.Object
 	c.Db.Where("`key` in ?", keys).Find(&objects)
 	for i, object := range objects {
-		index := strconv.Itoa(i + 1)
+		cell := "A" + strconv.Itoa(i+1)
 		if err = file.SetRowHeight("Sheet1", i+1, 128); err != nil {
 			return err
 		}
 		if err = file.AddPictureFromBytes(
-			"Sheet1",
-			"A"+index,
-			"",
-			"QR"+index,
-			".png",
-			object.Value,
+			"Sheet1", cell, "", "", ".png", object.Value,
 		); err != nil {
 			return err
 		}
