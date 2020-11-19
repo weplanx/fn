@@ -7,7 +7,7 @@ require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.4+incompatible
 	github.com/fogleman/gg v1.3.0
 	github.com/gin-gonic/gin v1.6.3
-	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/google/uuid v1.1.2
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e

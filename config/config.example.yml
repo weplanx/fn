@@ -29,4 +29,4 @@ storage:
 #    secret_key:
 #    bucket_name:
 fonts:
-  consola: ./fonts/consola.ttf
+  JetBrainsMono: ./fonts/JetBrainsMono.ttf

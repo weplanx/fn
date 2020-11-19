@@ -3,8 +3,8 @@ package qrcode
 import (
 	"errors"
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
 	"github.com/skip2/go-qrcode"
-	"image"
 )
 
 var (
@@ -12,47 +12,51 @@ var (
 )
 
 type Service struct {
-	Fonts map[string]string
+	Fonts map[string]*truetype.Font
 }
 
 type Option struct {
 	Content string `json:"content"`
 	Size    int    `json:"size"`
-	Font    Font   `json:"font"`
+	Text    Text   `json:"text"`
 }
 
-type Font struct {
-	Text   string  `json:"text"`
+type Text struct {
+	Value  string  `json:"value"`
 	Type   string  `json:"type"`
 	Size   float64 `json:"size"`
 	Margin float64 `json:"margin"`
 }
 
-func (c *Service) Factory(option Option) (im image.Image, err error) {
+func (c *Service) Factory(option Option) (dc *gg.Context, err error) {
 	var qr *qrcode.QRCode
 	if qr, err = qrcode.New(option.Content, qrcode.Medium); err != nil {
 		return
 	}
-	dc := gg.NewContextForImage(qr.Image(option.Size))
-	if option.Font != (Font{}) {
-		font := option.Font
-		if typ, ok := c.Fonts[font.Type]; ok {
-			if err = dc.LoadFontFace(typ, font.Size); err != nil {
-				return
-			}
-		} else {
+	dc = gg.NewContextForImage(qr.Image(option.Size))
+	if option.Text != (Text{}) {
+		text := option.Text
+		if c.Fonts[text.Type] == nil {
 			err = FontNotExists
 			return
 		}
+		dc.SetFontFace(truetype.NewFace(
+			c.Fonts[text.Type],
+			&truetype.Options{
+				Size: text.Size,
+			},
+		))
 		dc.SetRGB(0, 0, 0)
+		if text.Value == "" {
+			text.Value = option.Content
+		}
 		dc.DrawStringAnchored(
-			font.Text,
+			text.Value,
 			float64(option.Size)/2,
-			float64(option.Size)-font.Margin,
+			float64(option.Size)-text.Margin,
 			0.5,
 			0.5,
 		)
 	}
-	im = dc.Image()
 	return
 }

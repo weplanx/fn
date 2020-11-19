@@ -10,6 +10,7 @@ import (
 	"func-api/application/service/storage/drive"
 	"func-api/config"
 	"github.com/gin-gonic/gin"
+	"github.com/golang/freetype/truetype"
 	"go.uber.org/fx"
 	"gopkg.in/yaml.v3"
 	"gorm.io/driver/mysql"
@@ -136,10 +137,19 @@ func InitializeExcel() *excel.Service {
 }
 
 // Initialize QRCode function logic
-func InitializeQRCode(cfg *config.Config) *qrcode.Service {
-	qr := new(qrcode.Service)
-	qr.Fonts = cfg.Fonts
-	return qr
+func InitializeQRCode(cfg *config.Config) (qr *qrcode.Service, err error) {
+	qr = new(qrcode.Service)
+	qr.Fonts = make(map[string]*truetype.Font)
+	for key, val := range cfg.Fonts {
+		var bs []byte
+		if bs, err = ioutil.ReadFile(val); err != nil {
+			return
+		}
+		if qr.Fonts[key], err = truetype.Parse(bs); err != nil {
+			return
+		}
+	}
+	return
 }
 
 // Start http service
