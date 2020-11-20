@@ -3,7 +3,6 @@ package qrcode
 import (
 	"bytes"
 	"func-api/application/model"
-	"func-api/application/service/qrcode"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -13,7 +12,7 @@ import (
 )
 
 type _ExportBody struct {
-	Lists []qrcode.Option `json:"lists"`
+	Lists []string `json:"lists"`
 }
 
 func (c *Controller) Export(ctx *gin.Context) interface{} {
@@ -24,8 +23,8 @@ func (c *Controller) Export(ctx *gin.Context) interface{} {
 	}
 	file := excelize.NewFile()
 	keys := make([]string, len(body.Lists))
-	for index, option := range body.Lists {
-		keys[index] = option.Content
+	for index, content := range body.Lists {
+		keys[index] = content
 	}
 	var objects []model.Object
 	c.Db.Where("`key` in ?", keys).Find(&objects)
