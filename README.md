@@ -140,6 +140,7 @@ Export to excel
 #### parameters (JSON):
 
 - **lists** `string[]` Multiple QR code content
+- **height** `float` Row height
 
 #### response body (JSON):
 

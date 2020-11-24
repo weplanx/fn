@@ -12,7 +12,8 @@ import (
 )
 
 type _ExportBody struct {
-	Lists []string `json:"lists"`
+	Lists  []string `json:"lists"`
+	Height float64  `json:"height"`
 }
 
 func (c *Controller) Export(ctx *gin.Context) interface{} {
@@ -30,7 +31,7 @@ func (c *Controller) Export(ctx *gin.Context) interface{} {
 	c.Db.Where("`key` in ?", keys).Find(&objects)
 	for i, object := range objects {
 		cell := "A" + strconv.Itoa(i+1)
-		if err = file.SetRowHeight("Sheet1", i+1, 128); err != nil {
+		if err = file.SetRowHeight("Sheet1", i+1, body.Height); err != nil {
 			return err
 		}
 		if err = file.AddPictureFromBytes(
