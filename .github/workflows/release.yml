@@ -28,9 +28,9 @@ jobs:
           GOOS: linux
 
       - uses: crazy-max/ghaction-docker-meta@v1
-          id: meta
-          with:
-            images: kainonly/func-api
+        id: meta
+        with:
+          images: kainonly/func-api
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
