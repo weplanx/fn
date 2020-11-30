@@ -2,11 +2,11 @@
 
 Provide high-performance function extension services
 
-[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/kainonly/func-api?style=flat-square)](https://github.com/kainonly/func-api)
-[![Github Actions](https://img.shields.io/github/workflow/status/kainonly/func-api/release?style=flat-square)](https://github.com/kainonly/func-api/actions)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/kain-lab/func-api?style=flat-square)](https://github.com/kain-lab/func-api)
+[![Github Actions](https://img.shields.io/github/workflow/status/kain-lab/func-api/release?style=flat-square)](https://github.com/kain-lab/func-api/actions)
 [![Image Size](https://img.shields.io/docker/image-size/kainonly/func-api?style=flat-square)](https://hub.docker.com/r/kainonly/func-api)
 [![Docker Pulls](https://img.shields.io/docker/pulls/kainonly/func-api.svg?style=flat-square)](https://hub.docker.com/r/kainonly/func-api)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/kainonly/func-api/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/kain-lab/func-api/master/LICENSE)
 
 ## Setup
 
