@@ -26,7 +26,9 @@ jobs:
           go-version: ^1.17
 
       - name: 构建应用
-        run: go build -tags=jsoniter -o dist/main main.go wire_gen.go
+        run: |
+          go mod tidy
+          go build -tags=jsoniter -o dist/main main.go wire_gen.go
         env:
           CGO_ENABLED: 0
           GO111MODULE: on
