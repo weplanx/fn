@@ -1,0 +1,57 @@
+name: 发布
+
+on:
+  release:
+    types: [ published ]
+
+env:
+  REGISTRY: ccr.ccs.tencentyun.com
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: 检出
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: 安装 Golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.17
+
+      - name: 构建应用
+        run: go build -tags=jsoniter -o dist/main main.go wire_gen.go
+        env:
+          CGO_ENABLED: 0
+          GO111MODULE: on
+          GOARCH: amd64
+          GOOS: linux
+
+      - name: 登录 TCR
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.TCR_USERNAME }}
+          password: ${{ secrets.TCR_PASSWORD }}
+
+      - name: 解析容器镜像标签与标记
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: 构建并推送容器镜像
+        uses: docker/build-push-action@v2
+        env:
+          GIN_MODE: release
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
