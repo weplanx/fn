@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"github.com/caarlos0/env/v6"
 	"github.com/google/wire"
-	"openapi/common"
+	"github.com/weplanx/openapi/common"
 )
 
 var Provides = wire.NewSet()

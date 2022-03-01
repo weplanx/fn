@@ -6,8 +6,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"openapi/app"
-	"openapi/common"
+	"github.com/weplanx/openapi/app"
+	"github.com/weplanx/openapi/common"
 )
 
 func App(value *common.Values) (*gin.Engine, error) {

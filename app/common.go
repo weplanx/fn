@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/weplanx/go/route"
-	"openapi/app/index"
-	"openapi/common"
+	"github.com/weplanx/openapi/app/index"
+	"github.com/weplanx/openapi/common"
 )
 
 var Provides = wire.NewSet(

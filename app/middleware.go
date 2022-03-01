@@ -3,8 +3,8 @@ package app
 import (
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"github.com/weplanx/openapi/common"
 	"go.uber.org/zap"
-	"openapi/common"
 	"time"
 )
 
