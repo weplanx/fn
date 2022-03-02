@@ -10,5 +10,6 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/json-iterator/go v1.1.11
 	github.com/weplanx/go v0.0.1
+	go.mongodb.org/mongo-driver v1.8.0
 	go.uber.org/zap v1.19.1
 )

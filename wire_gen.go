@@ -8,16 +8,24 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"openapi/app"
-	"openapi/app/index"
-	"openapi/common"
+	"github.com/weplanx/openapi/app"
+	"github.com/weplanx/openapi/app/index"
+	"github.com/weplanx/openapi/bootstrap"
+	"github.com/weplanx/openapi/common"
 )
 
 // Injectors from wire.go:
 
 func App(value *common.Values) (*gin.Engine, error) {
+	client, err := bootstrap.UseMongoDB(value)
+	if err != nil {
+		return nil, err
+	}
+	database := bootstrap.UseDatabase(client, value)
 	inject := &common.Inject{
-		Values: value,
+		Values:      value,
+		MongoClient: client,
+		Db:          database,
 	}
 	service := &index.Service{
 		Inject: inject,

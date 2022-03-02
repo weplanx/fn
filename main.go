@@ -1,6 +1,6 @@
 package main
 
-import "openapi/bootstrap"
+import "github.com/weplanx/openapi/bootstrap"
 
 func main() {
 	values, err := bootstrap.SetValues()
