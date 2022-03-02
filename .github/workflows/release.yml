@@ -7,6 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   TCR_REGISTRY: ccr.ccs.tencentyun.com
+  TCR_HKREGISTRY: hkccr.ccs.tencentyun.com
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -73,3 +74,5 @@ jobs:
           dst: |
             ${{ env.TCR_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.TCR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{steps.meta.outputs.version}}
+            ${{ env.TCR_HKREGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.TCR_HKREGISTRY }}/${{ env.IMAGE_NAME }}:${{steps.meta.outputs.version}}
