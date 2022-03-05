@@ -19,5 +19,6 @@ func New(
 ) *gin.Engine {
 	r := globalMiddleware(gin.New(), values)
 	r.GET("/", route.Use(index.Index))
+	r.GET("/ip", route.Use(index.Ip))
 	return r
 }
