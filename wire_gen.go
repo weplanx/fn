@@ -9,6 +9,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/weplanx/openapi/app"
+	"github.com/weplanx/openapi/app/geo"
 	"github.com/weplanx/openapi/app/index"
 	"github.com/weplanx/openapi/bootstrap"
 	"github.com/weplanx/openapi/common"
@@ -33,6 +34,12 @@ func App(value *common.Values) (*gin.Engine, error) {
 	controller := &index.Controller{
 		Service: service,
 	}
-	engine := app.New(value, controller)
+	geoService := &geo.Service{
+		Inject: inject,
+	}
+	geoController := &geo.Controller{
+		Service: geoService,
+	}
+	engine := app.New(value, controller, geoController)
 	return engine, nil
 }

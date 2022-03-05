@@ -26,6 +26,7 @@ func (x *Service) FindIp(ctx context.Context, value string) (data map[string]int
 	).Decode(&data); err != nil {
 		return
 	}
+	delete(data, "_id")
 	delete(data, "start")
 	delete(data, "end")
 	return
