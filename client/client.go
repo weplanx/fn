@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/weplanx/openapi/model"
 	"net/http"
 	"sort"
 	"strings"
@@ -113,6 +114,45 @@ func (x *OpenAPI) Ping(ctx context.Context) (result map[string]interface{}, err 
 func (x *OpenAPI) Ip(ctx context.Context, ip string) (result map[string]interface{}, err error) {
 	req := x.R(resty.MethodGet, "/ip").
 		SetQueryParam("value", ip)
+	x.SetAuthorization(req)
+	if _, err = req.SetContext(ctx).
+		SetResult(&result).
+		Send(); err != nil {
+		return
+	}
+	return
+}
+
+func (x *OpenAPI) GeoCountries(ctx context.Context, fields []string) (result []model.Country, err error) {
+	req := x.R(resty.MethodGet, "/geo/countries").
+		SetQueryParam("fields", strings.Join(fields, ","))
+	x.SetAuthorization(req)
+	if _, err = req.SetContext(ctx).
+		SetResult(&result).
+		Send(); err != nil {
+		return
+	}
+	return
+}
+
+func (x *OpenAPI) GetStates(ctx context.Context, country string, fields []string) (result []model.State, err error) {
+	req := x.R(resty.MethodGet, "/geo/states").
+		SetQueryParam("country", country).
+		SetQueryParam("fields", strings.Join(fields, ","))
+	x.SetAuthorization(req)
+	if _, err = req.SetContext(ctx).
+		SetResult(&result).
+		Send(); err != nil {
+		return
+	}
+	return
+}
+
+func (x *OpenAPI) GetCities(ctx context.Context, country string, state string, fields []string) (result []model.City, err error) {
+	req := x.R(resty.MethodGet, "/geo/cities").
+		SetQueryParam("country", country).
+		SetQueryParam("state", state).
+		SetQueryParam("fields", strings.Join(fields, ","))
 	x.SetAuthorization(req)
 	if _, err = req.SetContext(ctx).
 		SetResult(&result).
