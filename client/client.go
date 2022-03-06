@@ -109,3 +109,15 @@ func (x *OpenAPI) Ping(ctx context.Context) (result map[string]interface{}, err 
 	}
 	return
 }
+
+func (x *OpenAPI) Ip(ctx context.Context, ip string) (result map[string]interface{}, err error) {
+	req := x.R(resty.MethodGet, "/ip").
+		SetQueryParam("value", ip)
+	x.SetAuthorization(req)
+	if _, err = req.SetContext(ctx).
+		SetResult(&result).
+		Send(); err != nil {
+		return
+	}
+	return
+}
