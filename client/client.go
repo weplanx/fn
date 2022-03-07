@@ -44,7 +44,7 @@ func New(url string, options ...OptionFunc) *OpenAPI {
 	for _, v := range options {
 		v(x)
 	}
-	x.Client = resty.New().SetBaseURL(url)
+	x.Client = resty.New().SetBaseURL(url).EnableTrace()
 	x.Client.JSONMarshal = jsoniter.Marshal
 	x.Client.JSONUnmarshal = jsoniter.Unmarshal
 	return x
