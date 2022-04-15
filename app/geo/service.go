@@ -3,7 +3,7 @@ package geo
 import (
 	"context"
 	"github.com/weplanx/openapi/common"
-	"github.com/weplanx/openapi/model"
+	"github.com/weplanx/openapi/common/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

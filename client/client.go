@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/weplanx/openapi/model"
+	"github.com/weplanx/openapi/common/model"
 	"net/http"
 	"sort"
 	"strings"
