@@ -1,15 +1,19 @@
 package main
 
-import "github.com/weplanx/openapi/bootstrap"
+import (
+	"github.com/weplanx/openapi/bootstrap"
+)
 
 func main() {
-	values, err := bootstrap.SetValues()
+	api, err := bootstrap.NewAPI()
 	if err != nil {
 		panic(err)
 	}
-	app, err := App(values)
+
+	h, err := api.Routes()
 	if err != nil {
 		panic(err)
 	}
-	app.Run(":9000")
+
+	h.Spin()
 }
