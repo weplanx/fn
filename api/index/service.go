@@ -18,14 +18,15 @@ func (x *Service) GetIp(ctx context.Context, value string) (data map[string]inte
 		n, _ := strconv.ParseUint(v, 10, 64)
 		ip |= n << ((3 - uint64(k)) << 3)
 	}
+
 	if err = x.Db.Collection("ip").FindOne(ctx,
 		bson.M{
-			"start": bson.M{"$lte": ip},
-			"end":   bson.M{"$gt": ip},
+			"range": bson.M{"$gt": ip, "$lte": ip},
 		},
 	).Decode(&data); err != nil {
 		return
 	}
+
 	delete(data, "_id")
 	delete(data, "start")
 	delete(data, "end")
