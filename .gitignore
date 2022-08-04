@@ -21,7 +21,7 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/config/config.yml
-/public
-/fonts
-/go.sum
+/vendor
+config.yml
+config-map.yml
+deployment.yml
