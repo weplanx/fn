@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-var local *client.OpenAPI
+var x *client.Client
 
 func TestMain(m *testing.M) {
 	var err error
@@ -21,23 +21,38 @@ func TestMain(m *testing.M) {
 	if err := env.Parse(&e); err != nil {
 		panic(err)
 	}
-	if local, err = client.New(
-		e.Url,
-		client.SetApiGateway(e.Key, e.Secret),
-	); err != nil {
+	if x, err = client.New(e.Url, client.SetApiGateway(e.Key, e.Secret)); err != nil {
 		panic(err)
 	}
 	os.Exit(m.Run())
 }
 
-func TestOpenAPI_Ping(t *testing.T) {
-	data, err := local.Ping(context.TODO())
+func TestClient_Ping(t *testing.T) {
+	data, err := x.Ping(context.TODO())
 	assert.Nil(t, err)
 	t.Log(data)
 }
 
-func TestOpenAPI_Ip(t *testing.T) {
-	data, err := local.Ip(context.TODO(), "119.41.207.227")
+func TestClient_GetIp(t *testing.T) {
+	data, err := x.GetIp(context.TODO(), "119.41.207.227")
+	assert.Nil(t, err)
+	t.Log(data)
+}
+
+func TestClient_GetCountries(t *testing.T) {
+	data, err := x.GetCountries(context.TODO(), []string{"iso3"})
+	assert.Nil(t, err)
+	t.Log(data)
+}
+
+func TestClient_GetStates(t *testing.T) {
+	data, err := x.GetStates(context.TODO(), "CN", []string{"type"})
+	assert.Nil(t, err)
+	t.Log(data)
+}
+
+func TestClient_GetCities(t *testing.T) {
+	data, err := x.GetCities(context.TODO(), "CN", "AH", []string{"latitude"})
 	assert.Nil(t, err)
 	t.Log(data)
 }

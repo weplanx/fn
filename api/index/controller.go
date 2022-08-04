@@ -21,7 +21,7 @@ func (x *Controller) Index(ctx context.Context, c *app.RequestContext) {
 }
 
 type IpDto struct {
-	Value string `query:"value"`
+	Value string `query:"value,required"`
 }
 
 func (x *Controller) GetIp(ctx context.Context, c *app.RequestContext) {
