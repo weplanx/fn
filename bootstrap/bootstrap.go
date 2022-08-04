@@ -4,14 +4,12 @@ import (
 	"context"
 	"github.com/caarlos0/env/v6"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/config"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/google/wire"
 	"github.com/weplanx/openapi/common"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/writeconcern"
-	"os"
 )
 
 var Provides = wire.NewSet(
@@ -46,23 +44,17 @@ func UseMongoDB(values *common.Values) (*mongo.Client, error) {
 func UseDatabase(client *mongo.Client, values *common.Values) (db *mongo.Database) {
 	option := options.Database().
 		SetWriteConcern(writeconcern.New(writeconcern.WMajority()))
-	return client.Database(values.Database.Db, option)
+	return client.Database(values.Database.DbName, option)
 }
 
 // UseHertz 使用 Hertz
 // 配置文档 https://www.cloudwego.io/zh/docs/hertz/reference/config
 func UseHertz(values *common.Values) (h *server.Hertz, err error) {
-	opts := []config.Option{
-		server.WithHostPorts(":9000"),
+	h = server.Default(
+		server.WithHostPorts(values.Address),
 		server.WithStreamBody(true),
 		server.WithTransport(standard.NewTransporter),
-	}
-
-	if os.Getenv("MODE") != "release" {
-		opts = append(opts, server.WithExitWaitTime(0))
-	}
-
-	h = server.Default(opts...)
-
+		server.WithExitWaitTime(0),
+	)
 	return
 }

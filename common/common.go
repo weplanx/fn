@@ -11,11 +11,13 @@ type Inject struct {
 }
 
 type Values struct {
-	// MongoDB 配置
+	// 监听地址
+	Address string `env:"address" envDefault:":9000"`
+	// 数据库
 	Database Database `envPrefix:"DATABASE_"`
 }
 
 type Database struct {
-	Uri string `env:"URI"`
-	Db  string `env:"DBNAME"`
+	Uri    string `env:"URI"`
+	DbName string `env:"DBNAME"`
 }

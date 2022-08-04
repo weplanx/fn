@@ -2,27 +2,29 @@ package client_test
 
 import (
 	"context"
+	"github.com/caarlos0/env/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/weplanx/openapi/client"
 	"os"
 	"testing"
 )
 
-type Option struct {
-	URL    string `env:"X_URL"`
-	Key    string `env:"X_KEY"`
-	SECRET string `env:"X_SECRET"`
-}
-
 var local *client.OpenAPI
 
 func TestMain(m *testing.M) {
 	var err error
-	//var opt Option
-	//if err := env.Parse(&opt); err != nil {
-	//	panic(err)
-	//}
-	if local, err = client.New("http://localhost:9000"); err != nil {
+	var e struct {
+		Url    string `env:"URL"`
+		Key    string `env:"KEY"`
+		Secret string `env:"SECRET"`
+	}
+	if err := env.Parse(&e); err != nil {
+		panic(err)
+	}
+	if local, err = client.New(
+		e.Url,
+		client.SetApiGateway(e.Key, e.Secret),
+	); err != nil {
 		panic(err)
 	}
 	os.Exit(m.Run())
