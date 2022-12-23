@@ -13,7 +13,10 @@ func NewAPI() (*api.API, error) {
 	wire.Build(
 		wire.Struct(new(api.API), "*"),
 		wire.Struct(new(common.Inject), "*"),
-		Provides,
+		LoadValues,
+		UseMongoDB,
+		UseDatabase,
+		UseHertz,
 		api.Provides,
 	)
 	return &api.API{}, nil

@@ -5,38 +5,16 @@ import (
 	"github.com/caarlos0/env/v6"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
-	"github.com/google/wire"
 	"github.com/weplanx/openapi/common"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/writeconcern"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-)
-
-var Provides = wire.NewSet(
-	LoadValues,
-	UseMongoDB,
-	UseDatabase,
-	UseHertz,
 )
 
 // LoadValues 加载配置
 func LoadValues() (values *common.Values, err error) {
 	values = new(common.Values)
 	if err = env.Parse(values); err != nil {
-		return
-	}
-	return
-}
-
-// UseGorm 初始化 Gorm
-// 配置文档 https://gorm.io/zh_CN
-func UseGorm(values *common.Values) (db *gorm.DB, err error) {
-	if db, err = gorm.Open(postgres.Open(values.Database.Uri), &gorm.Config{
-		SkipDefaultTransaction:                   true,
-		DisableForeignKeyConstraintWhenMigrating: true,
-	}); err != nil {
 		return
 	}
 	return
