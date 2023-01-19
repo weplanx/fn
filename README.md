@@ -5,7 +5,7 @@
 [![Release](https://img.shields.io/github/v/release/weplanx/openapi.svg?style=flat-square)](https://github.com/weplanx/openapi)
 [![GitHub license](https://img.shields.io/github/license/weplanx/openapi?style=flat-square)](https://raw.githubusercontent.com/weplanx/openapi/main/LICENSE)
 
-开放服务接口，混合 Serverless 架构负责处理通用信息查询、数据加工、文件处理、工作流等
+Open service, hybrid Serverless architecture is responsible for handling general information query, data processing, file processing, workflow and so on
 
 ## License
 

@@ -90,20 +90,20 @@ func (x *API) ErrHandler() app.HandlerFunc {
 			return
 		}
 
-		switch any := err.Err.(type) {
+		switch anyType := err.Err.(type) {
 		case decoder.SyntaxError:
 			c.JSON(http.StatusBadRequest, utils.H{
-				"message": any.Description(),
+				"message": anyType.Description(),
 			})
 			break
 		case *binding.Error:
 			c.JSON(http.StatusBadRequest, utils.H{
-				"message": any.Error(),
+				"message": anyType.Error(),
 			})
 			break
 		case *validator.Error:
 			c.JSON(http.StatusBadRequest, utils.H{
-				"message": any.Error(),
+				"message": anyType.Error(),
 			})
 			break
 		default:

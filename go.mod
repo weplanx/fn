@@ -7,7 +7,7 @@ require (
 	github.com/bytedance/gopkg v0.0.0-20220413063733-65bf48ffb3a7
 	github.com/bytedance/sonic v1.5.0
 	github.com/caarlos0/env/v6 v6.9.1
-	github.com/cloudwego/hertz v0.4.2
+	github.com/cloudwego/hertz v0.5.0
 	github.com/google/wire v0.5.0
 	github.com/stretchr/testify v1.8.0
 	go.mongodb.org/mongo-driver v1.11.0
