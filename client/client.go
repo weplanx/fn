@@ -5,12 +5,14 @@ import (
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha256"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"github.com/bytedance/sonic"
 	"github.com/cloudwego/hertz/pkg/app/client"
 	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/model"
@@ -50,7 +52,11 @@ func New(url string, options ...OptionFunc) (x *Client, err error) {
 	x = new(Client)
 
 	if x.Client, err = client.NewClient(
+		client.WithDialer(standard.NewDialer()),
 		client.WithResponseBodyStream(true),
+		client.WithTLSConfig(&tls.Config{
+			InsecureSkipVerify: true,
+		}),
 	); err != nil {
 		return
 	}
@@ -118,10 +124,11 @@ func (x *OpenAPI) SetAuthorization() string {
 	}
 	accept := "application/json"
 	contextMd5 := ""
-	if x.Body != nil {
+	if x.Method == "POST" {
 		hashMd5 := md5.New()
 		hashMd5.Write(x.Body)
-		contextMd5 = hex.EncodeToString(hashMd5.Sum(nil))
+		md5Str := hex.EncodeToString(hashMd5.Sum(nil))
+		contextMd5 = base64.StdEncoding.EncodeToString([]byte(md5Str))
 	}
 	pathAndParameters := x.Path
 	if x.Query != nil {
@@ -130,6 +137,7 @@ func (x *OpenAPI) SetAuthorization() string {
 	signToString := fmt.Sprintf("%s%s\n%s\n\n%s\n%s",
 		headersKVString.String(), x.Method, accept, contextMd5, pathAndParameters,
 	)
+	fmt.Println(signToString)
 	hmacSha256 := hmac.New(sha256.New, []byte(x.Client.Secret))
 	hmacSha256.Write([]byte(signToString))
 	signature := base64.StdEncoding.EncodeToString(hmacSha256.Sum(nil))
@@ -141,20 +149,18 @@ func (x *OpenAPI) SetAuthorization() string {
 
 func (x *OpenAPI) Send(ctx context.Context) (resp *protocol.Response, err error) {
 	req := new(protocol.Request)
-	req.SetMethod(x.Method)
-	u := fmt.Sprintf(`%s%s?%s`, x.Client.Url, x.Path, x.Query.Encode())
-	req.SetRequestURI(u)
+	req.Header.SetMethod(x.Method)
+	req.Header.SetContentTypeBytes([]byte("application/json"))
+	req.SetRequestURI(fmt.Sprintf(`%s%s?%s`, x.Client.Url, x.Path, x.Query.Encode()))
 	req.SetHeaders(x.Header)
-
-	if x.Client.Key != "" && x.Client.Secret != "" {
-		req.SetHeader("Authorization", x.SetAuthorization())
-	}
-
+	//if x.Client.Key != "" && x.Client.Secret != "" {
+	//	req.SetHeader("Authorization", x.SetAuthorization())
+	//}
+	req.SetBody(x.Body)
 	resp = new(protocol.Response)
 	if err = x.Client.Do(ctx, req, resp); err != nil {
 		return
 	}
-
 	return
 }
 
