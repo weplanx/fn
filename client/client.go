@@ -10,7 +10,9 @@ import (
 	"fmt"
 	"github.com/bytedance/sonic"
 	"github.com/cloudwego/hertz/pkg/app/client"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/model"
 	"net/http"
 	"net/url"
@@ -237,11 +239,15 @@ func (x *Client) GetCities(ctx context.Context, country string, state string, fi
 	return
 }
 
-//func (x *Client) CreateExcel(ctx context.Context) {
-//	var resp *protocol.Response
-//	if resp, err = x.R("POST", "/excel/cities").
-//		SetQuery(query).
-//		Send(ctx); err != nil {
-//		return
-//	}
-//}
+func (x *Client) CreateExcel(ctx context.Context, dto excel.CreateDto) (data utils.H, err error) {
+	var resp *protocol.Response
+	if resp, err = x.R("POST", "/excel").
+		SetData(dto).
+		Send(ctx); err != nil {
+		return
+	}
+	if err = sonic.Unmarshal(resp.Body(), &data); err != nil {
+		return
+	}
+	return
+}
