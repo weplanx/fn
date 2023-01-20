@@ -104,7 +104,7 @@ func (x *OpenAPI) SetData(v interface{}) *OpenAPI {
 func (x *OpenAPI) SetAuthorization() string {
 	var headers []string
 	var headersKVString strings.Builder
-	for k, _ := range x.Header {
+	for k := range x.Header {
 		if k == "Accept" {
 			continue
 		}
@@ -236,3 +236,12 @@ func (x *Client) GetCities(ctx context.Context, country string, state string, fi
 	}
 	return
 }
+
+//func (x *Client) CreateExcel(ctx context.Context) {
+//	var resp *protocol.Response
+//	if resp, err = x.R("POST", "/excel/cities").
+//		SetQuery(query).
+//		Send(ctx); err != nil {
+//		return
+//	}
+//}

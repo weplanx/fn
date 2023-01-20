@@ -12,6 +12,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/google/wire"
+	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/api/geo"
 	"github.com/weplanx/openapi/api/index"
 	"github.com/weplanx/openapi/common"
@@ -22,6 +23,7 @@ import (
 var Provides = wire.NewSet(
 	index.Provides,
 	geo.Provides,
+	excel.Provides,
 )
 
 type API struct {
@@ -33,6 +35,8 @@ type API struct {
 	IndexService    *index.Service
 	GeoController   *geo.Controller
 	GeoService      *geo.Service
+	ExcelController *excel.Controller
+	ExcelService    *excel.Service
 }
 
 func (x *API) Routes() (h *server.Hertz, err error) {
@@ -40,14 +44,19 @@ func (x *API) Routes() (h *server.Hertz, err error) {
 	h.Use(x.AccessLog())
 	h.Use(x.ErrHandler())
 
-	h.GET("/", x.IndexController.Index)
-	h.GET("/ip", x.IndexController.GetIp)
+	h.GET("", x.IndexController.Index)
+	h.GET("ip", x.IndexController.GetIp)
 
-	_geo := h.Group("/geo")
+	_geo := h.Group("geo")
 	{
-		_geo.GET("/countries", x.GeoController.Countries)
-		_geo.GET("/states", x.GeoController.States)
-		_geo.GET("/cities", x.GeoController.Cities)
+		_geo.GET("countries", x.GeoController.Countries)
+		_geo.GET("states", x.GeoController.States)
+		_geo.GET("cities", x.GeoController.Cities)
+	}
+
+	_excel := h.Group("excel")
+	{
+		_excel.POST("", x.ExcelController.Create)
 	}
 
 	return
