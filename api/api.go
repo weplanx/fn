@@ -44,17 +44,17 @@ func (x *API) Routes() (h *server.Hertz, err error) {
 	h.Use(x.AccessLog())
 	h.Use(x.ErrHandler())
 
-	h.GET("", x.IndexController.Index)
-	h.GET("ip", x.IndexController.GetIp)
+	h.GET("/", x.IndexController.Index)
+	h.GET("/ip", x.IndexController.GetIp)
 
-	_geo := h.Group("geo")
+	_geo := h.Group("/geo")
 	{
-		_geo.GET("countries", x.GeoController.Countries)
-		_geo.GET("states", x.GeoController.States)
-		_geo.GET("cities", x.GeoController.Cities)
+		_geo.GET("/countries", x.GeoController.Countries)
+		_geo.GET("/states", x.GeoController.States)
+		_geo.GET("/cities", x.GeoController.Cities)
 	}
 
-	_excel := h.Group("excel")
+	_excel := h.Group("/excel")
 	{
 		_excel.POST("", x.ExcelController.Create)
 	}
