@@ -63,7 +63,7 @@ func TestClient_CreateExcel(t *testing.T) {
 	data := [][]interface{}{
 		{"Name", "CCType", "CCNumber", "Century", "Currency", "Date", "Email", "URL"},
 	}
-	for n := 0; n < 50000; n++ {
+	for n := 0; n < 100000; n++ {
 		data = append(data, []interface{}{
 			faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
 		})

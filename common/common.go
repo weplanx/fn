@@ -1,27 +1,34 @@
 package common
 
 import (
+	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Inject struct {
-	Values *Values
-	Mongo  *mongo.Client
-	Db     *mongo.Database
+	Values    *Values
+	Mongo     *mongo.Client
+	Db        *mongo.Database
+	Nats      *nats.Conn
+	JetStream nats.JetStreamContext
 }
 
 type Values struct {
-	// 监听地址
-	Address string `env:"address" envDefault:":9000"`
-	// 数据库
-	Database Database `envPrefix:"DATABASE_"`
-	// 存储
-	Storage Storage `envPrefix:"STORAGE_"`
+	Address  string `env:"address" envDefault:":9000"`
+	Database `envPrefix:"DATABASE_"`
+	Nats     `envPrefix:"NATS_"`
+	Storage  `envPrefix:"STORAGE_"`
 }
 
 type Database struct {
-	Uri    string `env:"URI"`
-	DbName string `env:"DBNAME"`
+	Mongo string `env:"MONGO,required"`
+	Name  string `env:"NAME,required"`
+	//Redis string `env:"REDIS,required"`
+}
+
+type Nats struct {
+	Hosts []string `env:"HOSTS,required" envSeparator:","`
+	Nkey  string   `env:"NKEY,required"`
 }
 
 type Storage struct {

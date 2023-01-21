@@ -2,13 +2,18 @@ package bootstrap
 
 import (
 	"context"
+	"fmt"
 	"github.com/caarlos0/env/v6"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/network/standard"
+	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nkeys"
 	"github.com/weplanx/openapi/common"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/writeconcern"
+	"strings"
+	"time"
 )
 
 // LoadValues 加载配置
@@ -26,7 +31,7 @@ func LoadValues() (values *common.Values, err error) {
 func UseMongoDB(values *common.Values) (*mongo.Client, error) {
 	return mongo.Connect(
 		context.TODO(),
-		options.Client().ApplyURI(values.Database.Uri),
+		options.Client().ApplyURI(values.Database.Mongo),
 	)
 }
 
@@ -36,7 +41,44 @@ func UseMongoDB(values *common.Values) (*mongo.Client, error) {
 func UseDatabase(client *mongo.Client, values *common.Values) (db *mongo.Database) {
 	option := options.Database().
 		SetWriteConcern(writeconcern.New(writeconcern.WMajority()))
-	return client.Database(values.Database.DbName, option)
+	return client.Database(values.Database.Name, option)
+}
+
+// UseNats
+// https://docs.nats.io/using-nats/developer
+// https://github.com/nats-io/nats.go
+func UseNats(values *common.Values) (nc *nats.Conn, err error) {
+	var kp nkeys.KeyPair
+	if kp, err = nkeys.FromSeed([]byte(values.Nats.Nkey)); err != nil {
+		return
+	}
+	defer kp.Wipe()
+	var pub string
+	if pub, err = kp.PublicKey(); err != nil {
+		return
+	}
+	if !nkeys.IsValidPublicUserKey(pub) {
+		return nil, fmt.Errorf("nkey 验证失败")
+	}
+	if nc, err = nats.Connect(
+		strings.Join(values.Nats.Hosts, ","),
+		nats.MaxReconnects(5),
+		nats.ReconnectWait(2*time.Second),
+		nats.ReconnectJitter(500*time.Millisecond, 2*time.Second),
+		nats.Nkey(pub, func(nonce []byte) ([]byte, error) {
+			sig, _ := kp.Sign(nonce)
+			return sig, nil
+		}),
+	); err != nil {
+		return
+	}
+	return
+}
+
+// UseJetStream
+// https://docs.nats.io/using-nats/developer/develop_jetstream
+func UseJetStream(nc *nats.Conn) (nats.JetStreamContext, error) {
+	return nc.JetStream(nats.PublishAsyncMaxPending(256))
 }
 
 // UseHertz 使用 Hertz

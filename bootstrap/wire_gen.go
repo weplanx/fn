@@ -26,10 +26,20 @@ func NewAPI() (*api.API, error) {
 		return nil, err
 	}
 	database := UseDatabase(client, values)
+	conn, err := UseNats(values)
+	if err != nil {
+		return nil, err
+	}
+	jetStreamContext, err := UseJetStream(conn)
+	if err != nil {
+		return nil, err
+	}
 	inject := &common.Inject{
-		Values: values,
-		Mongo:  client,
-		Db:     database,
+		Values:    values,
+		Mongo:     client,
+		Db:        database,
+		Nats:      conn,
+		JetStream: jetStreamContext,
 	}
 	hertz, err := UseHertz(values)
 	if err != nil {

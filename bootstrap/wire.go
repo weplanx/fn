@@ -16,6 +16,8 @@ func NewAPI() (*api.API, error) {
 		LoadValues,
 		UseMongoDB,
 		UseDatabase,
+		UseNats,
+		UseJetStream,
 		UseHertz,
 		api.Provides,
 	)
