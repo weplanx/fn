@@ -101,7 +101,7 @@ jobs:
         id: excel
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/excel
+          images: ${{ env.REGISTRY }}/weplanx/excel
 
       - name: 构建并推送容器镜像
         uses: docker/build-push-action@v2
@@ -114,7 +114,7 @@ jobs:
       - name: 复制容器镜像至 QCLOUD TCR
         uses: akhilerm/tag-push-action@v2.0.0
         with:
-          src: ${{ env.REGISTRY }}/excel:${{steps.meta.outputs.version}}
+          src: ${{ env.REGISTRY }}/weplanx/excel:${{steps.meta.outputs.version}}
           dst: |
-            ${{ env.TCR_REGISTRY }}/excel:latest
-            ${{ env.TCR_REGISTRY }}/excel:${{steps.meta.outputs.version}}
+            ${{ env.TCR_REGISTRY }}/weplanx/excel:latest
+            ${{ env.TCR_REGISTRY }}/weplanx/excel:${{steps.meta.outputs.version}}
