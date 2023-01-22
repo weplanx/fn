@@ -11,21 +11,28 @@ import (
 	"testing"
 )
 
+type TestEnv struct {
+	Url        string `env:"URL"`
+	Key        string `env:"KEY"`
+	Secret     string `env:"SECRET"`
+	client.Cos `envPrefix:"COS_"`
+}
+
 var x *client.Client
 
 func TestMain(m *testing.M) {
 	var err error
-	var e struct {
-		Url    string `env:"URL"`
-		Key    string `env:"KEY"`
-		Secret string `env:"SECRET"`
-	}
+	var e TestEnv
 	if err := env.Parse(&e); err != nil {
 		panic(err)
 	}
-	if x, err = client.New(e.Url, client.SetApiGateway(e.Key, e.Secret)); err != nil {
+	if x, err = client.New(e.Url,
+		client.SetApiGateway(e.Key, e.Secret),
+		client.SetCos(e.Cos.Url, e.Cos.SecretID, e.Cos.SecretKey),
+	); err != nil {
 		panic(err)
 	}
+
 	os.Exit(m.Run())
 }
 
@@ -78,4 +85,19 @@ func TestClient_CreateExcel(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	t.Log(r)
+}
+
+func TestClient_Excel(t *testing.T) {
+	data := [][]interface{}{
+		{"Name", "CCType", "CCNumber", "Century", "Currency", "Date", "Email", "URL"},
+	}
+	for n := 0; n < 1000; n++ {
+		data = append(data, []interface{}{
+			faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
+		})
+	}
+	err := x.Excel(context.TODO(), "test.excel", client.Sheets{
+		"Sheet1": data,
+	})
+	assert.NoError(t, err)
 }

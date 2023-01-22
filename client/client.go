@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"crypto/hmac"
 	"crypto/md5"
@@ -14,6 +15,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/model"
 	"net/http"
@@ -32,6 +34,13 @@ type Option struct {
 	Url    string
 	Key    string
 	Secret string
+	Cos
+}
+
+type Cos struct {
+	Url       string `env:"URL"`
+	SecretID  string `env:"SECRETID"`
+	SecretKey string `env:"SECRETKEY"`
 }
 
 type OptionFunc func(x *Client)
@@ -42,6 +51,16 @@ func SetApiGateway(key string, secret string) OptionFunc {
 	return func(x *Client) {
 		x.Key = key
 		x.Secret = secret
+	}
+}
+
+// SetCos 设置对象存储
+// https://cloud.tencent.com/document/product/436
+func SetCos(url string, id string, key string) OptionFunc {
+	return func(x *Client) {
+		x.Cos.Url = url
+		x.Cos.SecretID = id
+		x.Cos.SecretKey = key
 	}
 }
 
@@ -255,5 +274,30 @@ func (x *Client) CreateExcel(ctx context.Context, dto excel.CreateDto) (data uti
 	if err = sonic.Unmarshal(resp.Body(), &data); err != nil {
 		return
 	}
+	return
+}
+
+type Sheets map[string][][]interface{}
+
+func (x *Client) Excel(ctx context.Context, name string, sheets Sheets) (err error) {
+	var u *url.URL
+	u, err = url.Parse(x.Cos.Url)
+	baseURL := &cos.BaseURL{BucketURL: u}
+	cosClient := cos.NewClient(baseURL, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  x.Cos.SecretID,
+			SecretKey: x.Cos.SecretKey,
+		},
+	})
+
+	var b []byte
+	if b, err = sonic.Marshal(sheets); err != nil {
+		return
+	}
+
+	if _, err = cosClient.Object.Put(ctx, name, bytes.NewBuffer(b), nil); err != nil {
+		return
+	}
+
 	return
 }
