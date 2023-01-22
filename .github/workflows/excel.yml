@@ -1,4 +1,4 @@
-name: Release Openapi Container
+name: Release Excel Container
 
 on:
   release:
@@ -7,7 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   TCR_REGISTRY: ccr.ccs.tencentyun.com
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: weplanx/excel
 
 jobs:
   build_and_release:
@@ -25,6 +25,7 @@ jobs:
           go-version: ~1.19
 
       - run: |
+          cd functions/excel
           go mod tidy
           go build -o dist/main
         env:
