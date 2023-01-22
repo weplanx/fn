@@ -98,7 +98,7 @@ jobs:
           password: ${{ secrets.TCR_PASSWORD }}
 
       - name: 解析容器镜像标签与标记
-        id: meta
+        id: excel
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/excel
