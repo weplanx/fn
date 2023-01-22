@@ -14,7 +14,9 @@ type API struct {
 
 type M map[string]interface{}
 
-type Records []Record
+type Data struct {
+	Records []Record `json:"records"`
+}
 
 type Record struct {
 	Cos   `json:"cos"`
@@ -58,13 +60,13 @@ func (x *API) EventInvoke(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var records Records
-	if err := decoder.NewStreamDecoder(req.Body).Decode(&records); err != nil {
+	var data Data
+	if err := decoder.NewStreamDecoder(req.Body).Decode(&data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	for _, record := range records {
+	for _, record := range data.Records {
 		fmt.Println(record.Cos.Url)
 	}
 
