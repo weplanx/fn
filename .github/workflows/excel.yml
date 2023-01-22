@@ -57,7 +57,7 @@ jobs:
       - name: Push
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./functions/excel
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
