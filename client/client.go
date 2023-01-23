@@ -16,6 +16,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/tencentyun/cos-go-sdk-v5"
+	"github.com/vmihailenco/msgpack/v5"
 	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/model"
 	"net/http"
@@ -291,10 +292,9 @@ func (x *Client) Excel(ctx context.Context, name string, sheets Sheets) (err err
 	})
 
 	var b []byte
-	if b, err = sonic.Marshal(sheets); err != nil {
+	if b, err = msgpack.Marshal(sheets); err != nil {
 		return
 	}
-
 	if _, err = cosClient.Object.Put(ctx, name, bytes.NewBuffer(b), nil); err != nil {
 		return
 	}
