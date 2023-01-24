@@ -96,8 +96,6 @@ func TestClient_Excel(t *testing.T) {
 			faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
 		})
 	}
-	err := x.Excel(context.TODO(), "test.excel", client.Sheets{
-		"Sheet1": data,
-	})
+	err := x.Excel(context.TODO(), "test.Sheet1.excel", data)
 	assert.NoError(t, err)
 }
