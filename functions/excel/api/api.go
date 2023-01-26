@@ -10,6 +10,7 @@ import (
 	"github.com/vmihailenco/msgpack/v5"
 	"github.com/xuri/excelize/v2"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -103,6 +104,7 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 	if err = msgpack.NewDecoder(body).Decode(&metadata); err != nil {
 		return
 	}
+	log.Println(metadata)
 	file := excelize.NewFile()
 	defer file.Close()
 	for _, key := range metadata.Parts {
@@ -111,8 +113,7 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 			return
 		}
 		var resp *cos.Response
-		resp, err = x.Client.Object.Get(ctx, key, nil)
-		if err != nil {
+		if resp, err = x.Client.Object.Get(ctx, key, nil); err != nil {
 			return
 		}
 		dec := msgpack.NewDecoder(resp.Body)
@@ -125,6 +126,7 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 				}
 				return
 			}
+			log.Println(data)
 			cell, _ := excelize.CoordinatesToCellName(1, rowID)
 			if err = streamWriter.SetRow(cell, data); err != nil {
 				return
