@@ -88,20 +88,16 @@ func TestClient_CreateExcel(t *testing.T) {
 }
 
 func TestClient_Excel(t *testing.T) {
-	sheets := []client.Sheet{
-		{
-			Name: "Sheet1",
-			Data: []interface{}{"Name", "CCType", "CCNumber", "Century", "Currency", "Date", "Email", "URL"},
-		},
+	data := [][]interface{}{
+		{"Name", "CCType", "CCNumber", "Century", "Currency", "Date", "Email", "URL"},
 	}
 	for n := 0; n < 100000; n++ {
-		sheets = append(sheets, client.Sheet{
-			Name: "Sheet1",
-			Data: []interface{}{
-				faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
-			},
+		data = append(data, []interface{}{
+			faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
 		})
 	}
-	err := x.Excel(context.TODO(), "test.excel", sheets)
+	err := x.Excel(context.TODO(), "test", map[string][][]interface{}{
+		"Sheet1": data,
+	})
 	assert.NoError(t, err)
 }

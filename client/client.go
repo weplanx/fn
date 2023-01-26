@@ -278,12 +278,9 @@ func (x *Client) CreateExcel(ctx context.Context, dto excel.CreateDto) (data uti
 	return
 }
 
-type Sheet struct {
-	Name string        `msgpack:"name"`
-	Data []interface{} `msgpack:"data"`
-}
+type Sheets map[string][][]interface{}
 
-func (x *Client) Excel(ctx context.Context, name string, sheets []Sheet) (err error) {
+func (x *Client) Excel(ctx context.Context, name string, sheets Sheets) (err error) {
 	var u *url.URL
 	u, err = url.Parse(x.Cos.Url)
 	baseURL := &cos.BaseURL{BucketURL: u}
@@ -294,15 +291,18 @@ func (x *Client) Excel(ctx context.Context, name string, sheets []Sheet) (err er
 		},
 	})
 
-	w := bytes.NewBuffer(nil)
-	enc := msgpack.NewEncoder(w)
-	for _, v := range sheets {
-		if err = enc.Encode(v); err != nil {
+	for sheet, data := range sheets {
+		w := bytes.NewBuffer(nil)
+		enc := msgpack.NewEncoder(w)
+		for _, v := range data {
+			if err = enc.Encode(v); err != nil {
+				return
+			}
+		}
+		key := fmt.Sprintf(`%s.%s.excel`, name, sheet)
+		if _, err = cosClient.Object.Put(ctx, key, w, nil); err != nil {
 			return
 		}
-	}
-	if _, err = cosClient.Object.Put(ctx, name, w, nil); err != nil {
-		return
 	}
 
 	return
