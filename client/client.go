@@ -278,6 +278,10 @@ func (x *Client) CreateExcel(ctx context.Context, dto excel.CreateDto) (data uti
 	return
 }
 
+type ExcelMetadata struct {
+	Name  string   `msgpack:"name"`
+	Parts []string `msgpack:"parts"`
+}
 type Sheets map[string][][]interface{}
 
 func (x *Client) Excel(ctx context.Context, name string, sheets Sheets) (err error) {
@@ -291,6 +295,11 @@ func (x *Client) Excel(ctx context.Context, name string, sheets Sheets) (err err
 		},
 	})
 
+	metadata := ExcelMetadata{
+		Name:  name,
+		Parts: []string{},
+	}
+
 	for sheet, data := range sheets {
 		w := bytes.NewBuffer(nil)
 		enc := msgpack.NewEncoder(w)
@@ -299,10 +308,20 @@ func (x *Client) Excel(ctx context.Context, name string, sheets Sheets) (err err
 				return
 			}
 		}
-		key := fmt.Sprintf(`%s.%s.excel`, name, sheet)
+		key := fmt.Sprintf(`%s.%s.pack`, name, sheet)
+		metadata.Parts = append(metadata.Parts, key)
 		if _, err = cosClient.Object.Put(ctx, key, w, nil); err != nil {
 			return
 		}
+	}
+
+	var b []byte
+	if b, err = msgpack.Marshal(metadata); err != nil {
+		return
+	}
+	key := fmt.Sprintf(`%s.excel`, name)
+	if _, err = cosClient.Object.Put(ctx, key, bytes.NewBuffer(b), nil); err != nil {
+		return
 	}
 
 	return
