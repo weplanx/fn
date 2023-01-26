@@ -6,6 +6,7 @@ import (
 	"excel/common"
 	"fmt"
 	"github.com/bytedance/sonic/decoder"
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"github.com/vmihailenco/msgpack/v5"
 	"github.com/xuri/excelize/v2"
 	"io"
@@ -109,7 +110,8 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 		if streamWriter, err = file.NewStreamWriter(metadata.Name); err != nil {
 			return
 		}
-		resp, err := x.Client.Object.Get(ctx, key, nil)
+		var resp *cos.Response
+		resp, err = x.Client.Object.Get(ctx, key, nil)
 		if err != nil {
 			return
 		}
@@ -117,7 +119,7 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 		rowID := 1
 		for {
 			var data []interface{}
-			if err := dec.Decode(&data); err != nil {
+			if err = dec.Decode(&data); err != nil {
 				if err == io.EOF {
 					break
 				}
