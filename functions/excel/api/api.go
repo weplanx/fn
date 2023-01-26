@@ -76,10 +76,9 @@ func (x *API) EventInvoke(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Println(result)
-
 	for _, record := range result.Records {
-		key := strings.Replace(record.Cos.Url, x.Values.Cos.Url+"/", "", -1)
+		prefix := fmt.Sprintf(`/%s/%s/`, record.CosBucket.Appid, record.CosBucket.Name)
+		key := strings.Replace(record.Cos.Key, prefix, "", -1)
 		resp, err := x.Client.Object.Get(ctx, key, nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
