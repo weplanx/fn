@@ -76,6 +76,8 @@ func (x *API) EventInvoke(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	fmt.Println(result)
+
 	for _, record := range result.Records {
 		key := strings.Replace(record.Cos.Url, x.Values.Cos.Url+"/", "", -1)
 		resp, err := x.Client.Object.Get(ctx, key, nil)
