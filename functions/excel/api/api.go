@@ -10,7 +10,6 @@ import (
 	"github.com/vmihailenco/msgpack/v5"
 	"github.com/xuri/excelize/v2"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -78,7 +77,7 @@ func (x *API) EventInvoke(w http.ResponseWriter, req *http.Request) {
 	}
 
 	for _, record := range result.Records {
-		key := strings.Replace(record.Cos.Url, x.Values.Cos.Url, "", -1)
+		key := strings.Replace(record.Cos.Url, x.Values.Cos.Url+"/", "", -1)
 		resp, err := x.Client.Object.Get(ctx, key, nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -104,12 +103,12 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 	if err = msgpack.NewDecoder(body).Decode(&metadata); err != nil {
 		return
 	}
-	log.Println(metadata)
 	file := excelize.NewFile()
 	defer file.Close()
 	for _, key := range metadata.Parts {
 		var streamWriter *excelize.StreamWriter
-		if streamWriter, err = file.NewStreamWriter(metadata.Name); err != nil {
+		args := strings.Split(key, ".")
+		if streamWriter, err = file.NewStreamWriter(args[1]); err != nil {
 			return
 		}
 		var resp *cos.Response
@@ -126,7 +125,6 @@ func (x *API) toExcel(ctx context.Context, body io.Reader) (err error) {
 				}
 				return
 			}
-			log.Println(data)
 			cell, _ := excelize.CoordinatesToCellName(1, rowID)
 			if err = streamWriter.SetRow(cell, data); err != nil {
 				return
