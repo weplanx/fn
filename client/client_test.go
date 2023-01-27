@@ -9,6 +9,7 @@ import (
 	"github.com/weplanx/openapi/client"
 	"os"
 	"testing"
+	"time"
 )
 
 type TestEnv struct {
@@ -91,13 +92,15 @@ func TestClient_Excel(t *testing.T) {
 	data := [][]interface{}{
 		{"Name", "CCType", "CCNumber", "Century", "Currency", "Date", "Email", "URL"},
 	}
-	for n := 0; n < 100000; n++ {
+	for n := 0; n < 1000000; n++ {
 		data = append(data, []interface{}{
 			faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
 		})
 	}
+	start := time.Now()
 	err := x.Excel(context.TODO(), "test", map[string][][]interface{}{
 		"Sheet1": data,
 	})
+	t.Log(time.Since(start))
 	assert.NoError(t, err)
 }
