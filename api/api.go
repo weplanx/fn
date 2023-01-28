@@ -15,6 +15,7 @@ import (
 	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/api/geo"
 	"github.com/weplanx/openapi/api/index"
+	"github.com/weplanx/openapi/api/qrcode"
 	"github.com/weplanx/openapi/common"
 	"net/http"
 	"time"
@@ -24,6 +25,7 @@ var Provides = wire.NewSet(
 	index.Provides,
 	geo.Provides,
 	excel.Provides,
+	qrcode.Provides,
 )
 
 type API struct {
@@ -31,12 +33,14 @@ type API struct {
 
 	Hertz *server.Hertz
 
-	IndexController *index.Controller
-	IndexService    *index.Service
-	GeoController   *geo.Controller
-	GeoService      *geo.Service
-	ExcelController *excel.Controller
-	ExcelService    *excel.Service
+	IndexController  *index.Controller
+	IndexService     *index.Service
+	GeoController    *geo.Controller
+	GeoService       *geo.Service
+	ExcelController  *excel.Controller
+	ExcelService     *excel.Service
+	QrcodeController *qrcode.Controller
+	QrcodeService    *qrcode.Service
 }
 
 func (x *API) Routes() (h *server.Hertz, err error) {
