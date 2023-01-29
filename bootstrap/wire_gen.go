@@ -8,9 +8,9 @@ package bootstrap
 
 import (
 	"github.com/weplanx/openapi/api"
-	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/api/geo"
 	"github.com/weplanx/openapi/api/index"
+	"github.com/weplanx/openapi/api/qrcode"
 	"github.com/weplanx/openapi/common"
 )
 
@@ -57,21 +57,21 @@ func NewAPI() (*api.API, error) {
 	geoController := &geo.Controller{
 		Service: geoService,
 	}
-	excelService := &excel.Service{
+	qrcodeService := &qrcode.Service{
 		Inject: inject,
 	}
-	excelController := &excel.Controller{
-		Service: excelService,
+	qrcodeController := &qrcode.Controller{
+		Service: qrcodeService,
 	}
 	apiAPI := &api.API{
-		Inject:          inject,
-		Hertz:           hertz,
-		IndexController: controller,
-		IndexService:    service,
-		GeoController:   geoController,
-		GeoService:      geoService,
-		ExcelController: excelController,
-		ExcelService:    excelService,
+		Inject:           inject,
+		Hertz:            hertz,
+		IndexController:  controller,
+		IndexService:     service,
+		GeoController:    geoController,
+		GeoService:       geoService,
+		QrcodeController: qrcodeController,
+		QrcodeService:    qrcodeService,
 	}
 	return apiAPI, nil
 }

@@ -12,12 +12,10 @@ import (
 	"fmt"
 	"github.com/bytedance/sonic"
 	"github.com/cloudwego/hertz/pkg/app/client"
-	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/cloudwego/hertz/pkg/network/standard"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"github.com/vmihailenco/msgpack/v5"
-	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/model"
 	"net/http"
 	"net/url"
@@ -259,19 +257,6 @@ func (x *Client) GetCities(ctx context.Context, country string, state string, fi
 		return
 	}
 	data = make([]model.City, 0)
-	if err = sonic.Unmarshal(resp.Body(), &data); err != nil {
-		return
-	}
-	return
-}
-
-func (x *Client) CreateExcel(ctx context.Context, dto excel.CreateDto) (data utils.H, err error) {
-	var resp *protocol.Response
-	if resp, err = x.R("POST", "/excel").
-		SetData(dto).
-		Send(ctx); err != nil {
-		return
-	}
 	if err = sonic.Unmarshal(resp.Body(), &data); err != nil {
 		return
 	}

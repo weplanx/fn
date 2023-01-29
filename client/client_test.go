@@ -5,7 +5,6 @@ import (
 	"github.com/caarlos0/env/v6"
 	"github.com/go-faker/faker/v4"
 	"github.com/stretchr/testify/assert"
-	"github.com/weplanx/openapi/api/excel"
 	"github.com/weplanx/openapi/client"
 	"os"
 	"testing"
@@ -65,27 +64,6 @@ func TestClient_GetCities(t *testing.T) {
 	data, err := x.GetCities(context.TODO(), "CN", "AH", []string{"latitude"})
 	assert.NoError(t, err)
 	t.Log(data)
-}
-
-func TestClient_CreateExcel(t *testing.T) {
-	data := [][]interface{}{
-		{"Name", "CCType", "CCNumber", "Century", "Currency", "Date", "Email", "URL"},
-	}
-	for n := 0; n < 100000; n++ {
-		data = append(data, []interface{}{
-			faker.Name(), faker.CCType(), faker.CCNumber(), faker.Century(), faker.Currency(), faker.Date(), faker.Email(), faker.URL(),
-		})
-	}
-	r, err := x.CreateExcel(context.TODO(), excel.CreateDto{
-		Sheets: []excel.Sheet{
-			{
-				Name: "Sheet1",
-				Data: data,
-			},
-		},
-	})
-	assert.NoError(t, err)
-	t.Log(r)
 }
 
 func TestClient_Excel(t *testing.T) {
