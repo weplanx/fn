@@ -7,8 +7,8 @@
 package bootstrap
 
 import (
-	"excel/api"
-	"excel/common"
+	"tencent-workflow-excel/api"
+	"tencent-workflow-excel/common"
 )
 
 // Injectors from wire.go:
@@ -23,7 +23,7 @@ func NewAPI() (*api.API, error) {
 		return nil, err
 	}
 	inject := &common.Inject{
-		Values: values,
+		V:      values,
 		Client: client,
 	}
 	apiAPI := &api.API{
