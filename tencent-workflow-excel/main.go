@@ -1,16 +1,28 @@
 package main
 
 import (
-	"net/http"
-	"tencent-workflow-excel/bootstrap"
+	"context"
+	"fmt"
+	"log"
+	"strings"
+	"time"
 )
 
 func main() {
-	api, err := bootstrap.NewAPI()
-	if err != nil {
-		panic(err)
+	x := Inject{}
+	if err := Load(&x); err != nil {
+		log.Fatalln("environment configuration failed to load", err)
 	}
+	if err := Invoke(context.Background(), x); err != nil {
+		log.Fatalln(err)
+	}
+}
 
-	http.HandleFunc("/event-invoke", api.Invoke)
-	http.ListenAndServe(api.V.Address, nil)
+func Invoke(ctx context.Context, x Inject) (err error) {
+	now := time.Now().String()
+	key := fmt.Sprintf(`job_%s`, now)
+	if _, err = x.Client.Object.Put(ctx, key, strings.NewReader(now), nil); err != nil {
+		return
+	}
+	return
 }
