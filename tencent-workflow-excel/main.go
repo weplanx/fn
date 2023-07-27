@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	x := Inject{}
-	if err := Load(&x); err != nil {
+	x := new(Inject)
+	if err := Load(x); err != nil {
 		log.Fatalln("environment configuration failed to load", err)
 	}
 	if err := Invoke(context.Background(), x); err != nil {
@@ -18,7 +18,7 @@ func main() {
 	}
 }
 
-func Invoke(ctx context.Context, x Inject) (err error) {
+func Invoke(ctx context.Context, x *Inject) (err error) {
 	now := time.Now().String()
 	key := fmt.Sprintf(`job_%s`, now)
 	if _, err = x.Client.Object.Put(ctx, key, strings.NewReader(now), nil); err != nil {

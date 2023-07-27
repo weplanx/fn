@@ -23,7 +23,7 @@ type Values struct {
 
 func Load(x *Inject) (err error) {
 	x.V = new(Values)
-	if err = env.Parse(&x.V); err != nil {
+	if err = env.Parse(x.V); err != nil {
 		return
 	}
 
