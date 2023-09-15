@@ -22,7 +22,7 @@ jobs:
         with:
           go-version: ~1.21
       - name: Build Server
-        run: go build ./invoke
+        run: go build -o main ./invoke
         env:
           CGO_ENABLED: 0
           GO111MODULE: on
