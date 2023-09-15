@@ -1,7 +1,6 @@
-# Weplanx Functions
+# Weplanx Fn
 
-open service, hybrid serverless architecture is responsible for handling general information query, data processing,
-file processing, workflow
+Data workflow serverless functions for object storage file processing
 
 ## License
 
