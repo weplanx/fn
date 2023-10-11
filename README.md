@@ -6,7 +6,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/weplanx/fn?style=flat-square)](https://goreportcard.com/report/github.com/weplanx/fn)
 [![GitHub license](https://img.shields.io/github/license/weplanx/fn?style=flat-square)](https://raw.githubusercontent.com/weplanx/fn/main/LICENSE)
 
-Data workflow serverless functions for object storage file processing
+Data workflow serverless function for object storage processing
 
 ## License
 
