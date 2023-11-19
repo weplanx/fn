@@ -2,7 +2,7 @@ package fn_test
 
 import (
 	"context"
-	"github.com/caarlos0/env/v9"
+	"github.com/caarlos0/env/v10"
 	"github.com/go-faker/faker/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/weplanx/fn"

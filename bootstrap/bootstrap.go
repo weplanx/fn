@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"github.com/caarlos0/env/v9"
+	"github.com/caarlos0/env/v10"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"github.com/weplanx/fn/common"
 	"net/http"
